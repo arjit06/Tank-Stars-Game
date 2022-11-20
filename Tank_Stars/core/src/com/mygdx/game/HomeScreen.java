@@ -20,6 +20,7 @@ public class HomeScreen implements ApplicationListener, Screen
 
     // A variable for tracking elapsed time for the animation
     private float elapsedTime;
+    private float time=0;
     private final MyGdxGame game; //game only refers to tank stars no other game
     private OrthographicCamera camera; // like a real camera
     private Texture homepage;
@@ -54,7 +55,6 @@ public class HomeScreen implements ApplicationListener, Screen
 
         // Instantiate a SpriteBatch for drawing and reset the elapsed animation
         // time to 0
-        //batch = new SpriteBatch();
         elapsedTime = 0f;
     }
 
@@ -72,12 +72,14 @@ public class HomeScreen implements ApplicationListener, Screen
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0.2f, 0, 1);
+        //System.out.println(1);
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
         game.getBatch().begin();
         game.getBatch().draw(homepage, 0, 0,800,480);
         game.getBatch().end();
-        this.render();
+        time+=Gdx.graphics.getDeltaTime();
+        if (time>2)this.render(); // 1s later loading to start
 
     }
 

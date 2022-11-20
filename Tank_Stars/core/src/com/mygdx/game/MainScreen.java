@@ -32,26 +32,21 @@ public class MainScreen implements Screen
         game.getBatch().draw(mainpage, 0, 0,800,480);
         game.getBatch().end();
 
-//        if (Gdx.input.justTouched())  //used to get x-y coordinates of any point touched
-//        {
-//            System.out.println("X= "+Gdx.input.getX()+"Y= "+Gdx.input.getY());
-//        }
-
         if (Gdx.input.isTouched() && Gdx.input.getX()>=570 && Gdx.input.getX()<=720 && Gdx.input.getY()>=285 && Gdx.input.getY()<=345)
         {
             //this.dispose();
             game.dispose();                   //exit button pressed
         }
 
-//        if (Gdx.input.isTouched() && Gdx.input.getX()>=570 && Gdx.input.getX()<=720 && Gdx.input.getY()>=190 && Gdx.input.getY()<=245)
+//       else if (Gdx.input.isTouched() && Gdx.input.getX()>=570 && Gdx.input.getX()<=720 && Gdx.input.getY()>=190 && Gdx.input.getY()<=245)
 //        {
 //            game.dispose();                  //resume game button pressed
 //        }
 
-//        if (Gdx.input.isTouched() && Gdx.input.getX()>=575 && Gdx.input.getX()<=725 && Gdx.input.getY()>=90 && Gdx.input.getY()<=150)
-//        {
-//            game.setScreen(new HomeScreen(game));          //vs game button pressed
-//        }
+        else if (Gdx.input.isTouched() && Gdx.input.getX()>=575 && Gdx.input.getX()<=725 && Gdx.input.getY()>=90 && Gdx.input.getY()<=150)
+        {
+            game.setScreen(new ChooseTankScreen(game,"choose_tank_screen_default.png"));          //vs game button pressed
+        }
 
     }
 

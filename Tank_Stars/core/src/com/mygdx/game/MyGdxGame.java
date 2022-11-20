@@ -14,7 +14,7 @@ public class MyGdxGame extends Game {
 	public void create () {
 		batch = new SpriteBatch(); //used to render objects on the screen
 		font =new BitmapFont(); // used to render text on the screen
-		this.setScreen(new HomeScreen(this) /* association relation */ );
+		this.setScreen(new HomeScreen(this) /* composition relation */ );
 
 	}
 
