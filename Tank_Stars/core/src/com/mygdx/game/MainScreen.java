@@ -38,14 +38,14 @@ public class MainScreen implements Screen
             game.dispose();                   //exit button pressed
         }
 
-//       else if (Gdx.input.isTouched() && Gdx.input.getX()>=570 && Gdx.input.getX()<=720 && Gdx.input.getY()>=190 && Gdx.input.getY()<=245)
-//        {
-//            game.dispose();                  //resume game button pressed
-//        }
+       else if (Gdx.input.isTouched() && Gdx.input.getX()>=570 && Gdx.input.getX()<=720 && Gdx.input.getY()>=190 && Gdx.input.getY()<=245)
+        {
+            game.setScreen(new SavedScreen(game));                 //resume game button pressed
+        }
 
         else if (Gdx.input.isTouched() && Gdx.input.getX()>=575 && Gdx.input.getX()<=725 && Gdx.input.getY()>=90 && Gdx.input.getY()<=150)
         {
-            game.setScreen(new ChooseTankScreen(game,"choose_tank_screen_default.png"));          //vs game button pressed
+            game.setScreen(new ChooseTankScreen(game,"tank_screen_p1_1.png",1,"mainpage.png",this));          //vs game button pressed
         }
 
     }
@@ -81,6 +81,26 @@ public class MainScreen implements Screen
 //        bucketImage.dispose();
 //        dropSound.dispose();
 //        rainMusic.dispose();
+    }
+
+    public MyGdxGame getGame() {
+        return game;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
+    public Texture getMainpage() {
+        return mainpage;
+    }
+
+    public void setMainpage(Texture mainpage) {
+        this.mainpage = mainpage;
     }
 }
 

@@ -9,8 +9,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
+import jdk.tools.jmod.Main;
 
-public class ChooseTankScreen implements Screen, ApplicationListener
+public class ChooseTankScreen implements Screen//, ApplicationListener
 {
     private SpriteBatch batch;
     private Texture img;
@@ -18,47 +19,24 @@ public class ChooseTankScreen implements Screen, ApplicationListener
 
 
     // A variable for tracking elapsed time for the animation
-    private float elapsedTime;
     private float time=0;
     private final MyGdxGame game;
     private OrthographicCamera camera;
     private Texture tankpage;
-    private int cnt=0;
-    private String pagePath;
-    private int direction=0;
-    public ChooseTankScreen(MyGdxGame game,String path)
+    private String currpagePath;
+    private String prevpagePath;
+    private int currPlayer;
+    private MainScreen mainScreen;
+    public ChooseTankScreen(MyGdxGame game,String currpath,int currPlayer,String prevpagePath,MainScreen mainScreen)
     {
         this.game=game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-        tankpage=new Texture(path);
-        this.pagePath=path;
-
-
-        // Load the sprite sheet as a Texture
-        img = new Texture(Gdx.files.internal("tank_animation_1.png"));
-
-        // Use the split utility method to create a 2D array of TextureRegions. This is
-        // possible because this sprite sheet contains frames of equal size and they are
-        // all aligned.
-        TextureRegion[][] tmp = TextureRegion.split(img, img.getWidth() / 4, img.getHeight());
-
-        // Place the regions into a 1D array in the correct order, starting from the top
-        // left, going across first. The Animation constructor requires a 1D array.
-        TextureRegion[] animationFrames = new TextureRegion[4];
-        int index = 0;
-        for (int i = 0; i <1; i++) { //rows
-            for (int j = 0; j <4; j++) { //columns
-                animationFrames[index++] = tmp[i][j];
-            }
-        }
-
-        // Initialize the Animation with the frame interval and array of frames
-        changeTankAnimation = new Animation<TextureRegion>(0.125f, animationFrames);
-
-        // Instantiate a SpriteBatch for drawing and reset the elapsed animation
-        // time to 0
-        elapsedTime = 0f;
+        tankpage=new Texture(currpath);
+        this.currpagePath=currpath;
+        this.prevpagePath=prevpagePath;
+        this.currPlayer=currPlayer;
+        this.mainScreen=mainScreen;
     }
 
     @Override
@@ -78,23 +56,57 @@ public class ChooseTankScreen implements Screen, ApplicationListener
         game.getBatch().end();
         //this.render();
 
-//        if (Gdx.input.justTouched())  //used to get x-y coordinates of any point touched
-//        {
-//            System.out.println("X= "+Gdx.input.getX()+"Y= "+Gdx.input.getY());
-//        }
 
-//        if (Gdx.input.isTouched() && ((Gdx.input.getX()>=772 && Gdx.input.getX()<=789 && Gdx.input.getY()>=210 && Gdx.input.getY()<=247) ||(Gdx.input.getX()>=700 && Gdx.input.getX()<=757 && Gdx.input.getY()>=191 && Gdx.input.getY()<=264)))
-//        {
-//            //touched next arrow or next tank resp
-//            direction=1;
-//            System.out.println("next tank");
-//            this.render();
-//        }
-
-        if (Gdx.input.isTouched() && (Gdx.input.getX()>=583 && Gdx.input.getX()<=702 && Gdx.input.getY()>=307 && Gdx.input.getY()<=366))
+        if (Gdx.input.isTouched() && (Gdx.input.getX()>=502 && Gdx.input.getX()<=584 && Gdx.input.getY()>=133 && Gdx.input.getY()<=232))
         {
-            //play game button clicked
-            game.setScreen(new GameScreen(game));
+            String nextPagePath="";
+            if (currPlayer==1) nextPagePath= "tank_screen_p1_1.png";
+            else if (currPlayer==2) nextPagePath="tank_screen_p2_1.png";
+
+            //first tank selected
+            if (!currpagePath.equals(nextPagePath))
+            {
+                game.setScreen(new ChooseTankScreen(game,nextPagePath,this.currPlayer,this.currpagePath,this.mainScreen));
+            }
+
+        }
+
+        else if (Gdx.input.isTouched() && (Gdx.input.getX()>=604 && Gdx.input.getX()<=678 && Gdx.input.getY()>=142 && Gdx.input.getY()<=226))
+        {
+            String nextPagePath="";
+            if (currPlayer==1)nextPagePath= "tank_screen_p1_2.png";
+            else if (currPlayer==2) nextPagePath="tank_screen_p2_2.png";
+
+            //second tank selected
+            if (!currpagePath.equals(nextPagePath))
+            {
+                game.setScreen(new ChooseTankScreen(game,nextPagePath,this.currPlayer,this.currpagePath,this.mainScreen));
+            }
+        }
+        else if (Gdx.input.isTouched() && (Gdx.input.getX()>=694 && Gdx.input.getX()<=780 && Gdx.input.getY()>=140 && Gdx.input.getY()<=232))
+        {
+            String nextPagePath="";
+            if (currPlayer==1)nextPagePath= "tank_screen_p1_3.png";
+            else if (currPlayer==2) nextPagePath="tank_screen_p2_3.png";
+            //third tank selected
+            if (!currpagePath.equals(nextPagePath))
+            {
+                game.setScreen(new ChooseTankScreen(game,nextPagePath,this.currPlayer,this.currpagePath,this.mainScreen));
+            }
+        }
+
+        else if (Gdx.input.isTouched() && (Gdx.input.getX()>=571 && Gdx.input.getX()<=729 && Gdx.input.getY()>=299 && Gdx.input.getY()<=355))
+        {
+            //next button pressed
+            if (this.currPlayer==1)  game.setScreen(new ChooseTankScreen(game,"tank_screen_p2_1.png",2,currpagePath,this.mainScreen));
+            else game.setScreen(new GameScreen(game,this.mainScreen));
+
+        }
+
+        else if (Gdx.input.isTouched() && (Gdx.input.getX()>=19 && Gdx.input.getX()<=61 && Gdx.input.getY()>=14 && Gdx.input.getY()<=63))
+        {
+            //back button pressed
+            game.setScreen(new MainScreen(game));
         }
 
 
@@ -102,40 +114,7 @@ public class ChooseTankScreen implements Screen, ApplicationListener
     }
 
     @Override
-    public void create() {
-
-    }
-
-    @Override
     public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void render() {
-//        elapsedTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
-//
-//        // Get current frame of animation for the current elapsedTime
-//        TextureRegion currentFrame = changeTankAnimation.getKeyFrame(elapsedTime, true);
-//        game.getBatch().begin();
-//        game.getBatch().draw(currentFrame, 0, 0,800,480); // Draw current frame at (0, 0)
-//        game.getBatch().end();
-//        if (changeTankAnimation.isAnimationFinished(elapsedTime))
-//        {
-//            String nextPath;
-//            if (this.pagePath.equals("choose_tank_screen_default.png") && direction==1)
-//            {
-//                nextPath="tank_screen_2.png";
-//                game.setScreen(new ChooseTankScreen(game,nextPath)); /* interface runtime polymorphism*/
-//            }
-//            else if (this.pagePath.equals("tank_screen_2.png") && direction==1)
-//            {
-//                nextPath="tank_screen_3.png";
-//                game.setScreen(new ChooseTankScreen(game,nextPath)); /* interface runtime polymorphism*/
-//
-//            }
-//
-//        }
 
     }
 
@@ -157,5 +136,89 @@ public class ChooseTankScreen implements Screen, ApplicationListener
     @Override
     public void dispose() {
 
+    }
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public void setBatch(SpriteBatch batch) {
+        this.batch = batch;
+    }
+
+    public Texture getImg() {
+        return img;
+    }
+
+    public void setImg(Texture img) {
+        this.img = img;
+    }
+
+    public Animation<TextureRegion> getChangeTankAnimation() {
+        return changeTankAnimation;
+    }
+
+    public void setChangeTankAnimation(Animation<TextureRegion> changeTankAnimation) {
+        this.changeTankAnimation = changeTankAnimation;
+    }
+
+    public float getTime() {
+        return time;
+    }
+
+    public void setTime(float time) {
+        this.time = time;
+    }
+
+    public MyGdxGame getGame() {
+        return game;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
+    public Texture getTankpage() {
+        return tankpage;
+    }
+
+    public void setTankpage(Texture tankpage) {
+        this.tankpage = tankpage;
+    }
+
+    public String getCurrpagePath() {
+        return currpagePath;
+    }
+
+    public void setCurrpagePath(String currpagePath) {
+        this.currpagePath = currpagePath;
+    }
+
+    public String getPrevpagePath() {
+        return prevpagePath;
+    }
+
+    public void setPrevpagePath(String prevpagePath) {
+        this.prevpagePath = prevpagePath;
+    }
+
+    public int getCurrPlayer() {
+        return currPlayer;
+    }
+
+    public void setCurrPlayer(int currPlayer) {
+        this.currPlayer = currPlayer;
+    }
+
+    public MainScreen getMainScreen() {
+        return mainScreen;
+    }
+
+    public void setMainScreen(MainScreen mainScreen) {
+        this.mainScreen = mainScreen;
     }
 }

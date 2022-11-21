@@ -157,5 +157,41 @@ public class HomeScreen implements ApplicationListener, Screen
     public void setElapsedTime(float elapsedTime) {
         this.elapsedTime = elapsedTime;
     }
+
+    public Animation<TextureRegion> getLoadingAnimation() {
+        return loadingAnimation;
+    }
+
+    public void setLoadingAnimation(Animation<TextureRegion> loadingAnimation) {
+        this.loadingAnimation = loadingAnimation;
+    }
+
+    public float getTime() {
+        return time;
+    }
+
+    public void setTime(float time) {
+        this.time = time;
+    }
+
+    public MyGdxGame getGame() {
+        return game;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
+    public Texture getHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage(Texture homepage) {
+        this.homepage = homepage;
+    }
 }
 

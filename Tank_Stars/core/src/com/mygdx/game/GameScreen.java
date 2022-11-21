@@ -12,12 +12,14 @@ public class GameScreen implements ApplicationListener, Screen
     private final MyGdxGame game;
     private OrthographicCamera camera;
     private Texture gamepage;
-    public GameScreen(  MyGdxGame game)
+    private MainScreen mainScreen;
+    public GameScreen(  MyGdxGame game,MainScreen mainScreen)
     {
         this.game=game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         gamepage=new Texture("ingameScreen.png");
+        this.mainScreen=mainScreen;
 
     }
 
@@ -49,7 +51,7 @@ public class GameScreen implements ApplicationListener, Screen
 
         if (Gdx.input.isTouched() && Gdx.input.getX()>=13 && Gdx.input.getX()<=52 && Gdx.input.getY()>=11 && Gdx.input.getY()<=66)
         {
-               game.setScreen(new PauseMenu(game));               //pause menu pressed
+               game.setScreen(new PauseMenu(game,this));               //pause menu pressed
         }
 
     }
@@ -82,5 +84,33 @@ public class GameScreen implements ApplicationListener, Screen
     @Override
     public void dispose() {
 
+    }
+
+    public MyGdxGame getGame() {
+        return game;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
+    public Texture getGamepage() {
+        return gamepage;
+    }
+
+    public void setGamepage(Texture gamepage) {
+        this.gamepage = gamepage;
+    }
+
+    public MainScreen getMainScreen() {
+        return mainScreen;
+    }
+
+    public void setMainScreen(MainScreen mainScreen) {
+        this.mainScreen = mainScreen;
     }
 }
