@@ -15,7 +15,7 @@ public class SavedScreen implements Screen
         this.game=game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-        savedpage=new Texture("savedScreen.png");
+        savedpage=new Texture("save_game.png");
 
     }
 

@@ -40,7 +40,8 @@ public class MainScreen implements Screen
 
        else if (Gdx.input.isTouched() && Gdx.input.getX()>=570 && Gdx.input.getX()<=720 && Gdx.input.getY()>=190 && Gdx.input.getY()<=245)
         {
-            game.setScreen(new SavedScreen(game));                 //resume game button pressed
+            //game.setScreen(new SavedScreen(game));                 //resume game button pressed
+            game.setScreen(new LoadScreen(game));
         }
 
         else if (Gdx.input.isTouched() && Gdx.input.getX()>=575 && Gdx.input.getX()<=725 && Gdx.input.getY()>=90 && Gdx.input.getY()<=150)
