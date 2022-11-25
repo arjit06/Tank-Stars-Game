@@ -99,7 +99,10 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
         {
             //next button pressed
             if (this.currPlayer==1)  game.setScreen(new ChooseTankScreen(game,"tank_screen_p2_1.png",2,currpagePath,this.mainScreen));
-            else game.setScreen(new GameScreen(game,this.mainScreen));
+            else
+            {
+                if (Gdx.input.getX()>=620 && Gdx.input.getX()<=729) game.setScreen(new GameScreen(game,this.mainScreen));
+            }
 
         }
 
