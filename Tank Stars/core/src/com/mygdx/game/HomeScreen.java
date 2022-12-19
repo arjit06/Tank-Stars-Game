@@ -19,8 +19,8 @@ public class HomeScreen implements ApplicationListener, Screen
 
 
     // A variable for tracking elapsed time for the animation
-    private float elapsedTime;
-    private float time=0;
+    private Float elapsedTime;
+    private Float time=0f;
     private final MyGdxGame game; //game only refers to tank stars no other game
     private OrthographicCamera camera; // like a real camera
     private Texture homepage;
@@ -150,11 +150,11 @@ public class HomeScreen implements ApplicationListener, Screen
         this.loadingAnimation = loadingAnimation;
     }
 
-    public float getElapsedTime() {
+    public Float getElapsedTime() {
         return elapsedTime;
     }
 
-    public void setElapsedTime(float elapsedTime) {
+    public void setElapsedTime(Float elapsedTime) {
         this.elapsedTime = elapsedTime;
     }
 
@@ -166,11 +166,11 @@ public class HomeScreen implements ApplicationListener, Screen
         this.loadingAnimation = loadingAnimation;
     }
 
-    public float getTime() {
+    public Float getTime() {
         return time;
     }
 
-    public void setTime(float time) {
+    public void setTime(Float time) {
         this.time = time;
     }
 

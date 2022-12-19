@@ -10,7 +10,7 @@ public class SaveScreen implements Screen
     private final MyGdxGame game;
     private OrthographicCamera camera;
     private Texture savepage;
-    private GameScreen gameScreen;
+    private OldGameScreen gameScreen;
     public SaveScreen(MyGdxGame game)
     {
         this.game=game;

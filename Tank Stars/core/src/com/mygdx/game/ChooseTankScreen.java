@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
-import jdk.tools.jmod.Main;
 
 public class ChooseTankScreen implements Screen//, ApplicationListener
 {
@@ -19,7 +17,7 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
 
 
     // A variable for tracking elapsed time for the animation
-    private float time=0;
+    private Float time=0f;
     private final MyGdxGame game;
     private OrthographicCamera camera;
     private Texture tankpage;
@@ -27,6 +25,9 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
     private String prevpagePath;
     private int currPlayer;
     private MainScreen mainScreen;
+
+
+
     public ChooseTankScreen(MyGdxGame game,String currpath,int currPlayer,String prevpagePath,MainScreen mainScreen)
     {
         this.game=game;
@@ -37,6 +38,12 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
         this.prevpagePath=prevpagePath;
         this.currPlayer=currPlayer;
         this.mainScreen=mainScreen;
+
+//        SetPlayer.getPlayer1().setTank(new FrostTank(50f,111f,80f,60f));
+//        SetPlayer.getPlayer2().setTank(new FrostTank(565f,103f,80f,60f));
+
+
+
     }
 
     @Override
@@ -68,6 +75,9 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
             //first tank selected
             if (!currpagePath.equals(nextPagePath))
             {
+                if (currPlayer==1) SetPlayer.getPlayer1().setTank(new FrostTank(50f,111f,80f,60f));
+                else SetPlayer.getPlayer2().setTank(new FrostTank(565f,103f,80f,60f));
+
                 game.setScreen(new ChooseTankScreen(game,nextPagePath,this.currPlayer,this.currpagePath,this.mainScreen));
             }
 
@@ -82,6 +92,9 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
             //second tank selected
             if (!currpagePath.equals(nextPagePath))
             {
+                if (currPlayer==1) SetPlayer.getPlayer1().setTank(new BuratinoTank(50f,111f,80f,60f));
+                else SetPlayer.getPlayer2().setTank(new BuratinoTank(565f,103f,80f,60f));
+
                 game.setScreen(new ChooseTankScreen(game,nextPagePath,this.currPlayer,this.currpagePath,this.mainScreen));
             }
         }
@@ -93,6 +106,9 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
             //third tank selected
             if (!currpagePath.equals(nextPagePath))
             {
+                if (currPlayer==1) SetPlayer.getPlayer1().setTank(new AbramsTank(50f,111f,80f,60f));
+                else SetPlayer.getPlayer2().setTank(new AbramsTank(565f,103f,80f,60f));
+
                 game.setScreen(new ChooseTankScreen(game,nextPagePath,this.currPlayer,this.currpagePath,this.mainScreen));
             }
         }
@@ -103,7 +119,8 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
             if (this.currPlayer==1)  game.setScreen(new ChooseTankScreen(game,"tank_screen_p2_1.png",2,currpagePath,this.mainScreen));
             else
             {
-                if (Gdx.input.getX()>=630 && Gdx.input.getX()<=739) game.setScreen(new GameScreen(game,this.mainScreen));
+                //if (Gdx.input.getX()>=630 && Gdx.input.getX()<=739) game.setScreen(new OldGameScreen(game,this.mainScreen));
+                if (Gdx.input.getX()>=630 && Gdx.input.getX()<=739) game.setScreen(new GameScreen(game));
             }
 
         }
@@ -167,11 +184,11 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
         this.changeTankAnimation = changeTankAnimation;
     }
 
-    public float getTime() {
+    public Float getTime() {
         return time;
     }
 
-    public void setTime(float time) {
+    public void setTime(Float time) {
         this.time = time;
     }
 
@@ -226,4 +243,5 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
     public void setMainScreen(MainScreen mainScreen) {
         this.mainScreen = mainScreen;
     }
+
 }
