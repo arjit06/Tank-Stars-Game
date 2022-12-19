@@ -57,7 +57,6 @@ public class Weapon {
         if (cnt>50)
         {
             this.isBulletDead=1;
-            //System.out.println(this.x+","+this.y +" "+limitY);
         }
 
         //code
@@ -68,11 +67,8 @@ public class Weapon {
     public void projectileMotion(Float delta)
     {
         delta=delta*4;
-        //System.out.println(this.y);
-        //System.out.println(cnt);
         cnt++;
 
-        //System.out.println((delta));
         if (this.isBulletDead==1) return;
 
         this.x+=ux*delta;
@@ -80,29 +76,24 @@ public class Weapon {
         if (cnt==1) diff=this.y0-this.y;
         this.y+=diff;
 
-        //System.out.println(this.y+diff);
-        //System.out.println();
-
-
         if (x>=0 && x<=107)
         {
             limitY=GameScreen.getEquation().get(0).get(0)*this.x + GameScreen.getEquation().get(0).get(1) -5; //y=mx+c of ground at curr x
-            //System.out.println(limitY);
             if(this.y<(limitY))
             {
 
                 this.blast(limitY);
             }
-            if(GameScreen.getTURN()==1)
-            {
-                Player currPlayer=GameScreen.getPlayer2();
-                currPlayer.healthReduction(this.x,this.y,this);
-            }
-            else
-            {
-                Player currPlayer=GameScreen.getPlayer1();
-                currPlayer.healthReduction(this.x,this.y,this);
-            }
+//            if(GameScreen.getTURN()==1)
+//            {
+//                Player currPlayer=GameScreen.getPlayer2();
+//                currPlayer.healthReduction(this.x,this.y,this);
+//            }
+//            else
+//            {
+//                Player currPlayer=GameScreen.getPlayer1();
+//                currPlayer.healthReduction(this.x,this.y,this);
+//            }
         }
         else if( x>=107 && x<=314) {
             limitY=GameScreen.getEquation().get(1).get(0)*this.x + GameScreen.getEquation().get(1).get(1) -5;
@@ -110,16 +101,16 @@ public class Weapon {
             {
                 this.blast(limitY);
             }
-            if(GameScreen.getTURN()==1)
-            {
-                Player currPlayer=GameScreen.getPlayer2();
-                currPlayer.healthReduction(this.x,this.y,this);
-            }
-            else
-            {
-                Player currPlayer=GameScreen.getPlayer1();
-                currPlayer.healthReduction(this.x,this.y,this);
-            }
+//            if(GameScreen.getTURN()==1)
+//            {
+//                Player currPlayer=GameScreen.getPlayer2();
+//                currPlayer.healthReduction(this.x,this.y,this);
+//            }
+//            else
+//            {
+//                Player currPlayer=GameScreen.getPlayer1();
+//                currPlayer.healthReduction(this.x,this.y,this);
+//            }
 
 
         }
@@ -130,16 +121,16 @@ public class Weapon {
             {
                 this.blast(limitY);
             }
-            if(GameScreen.getTURN()==1)
-            {
-                Player currPlayer=GameScreen.getPlayer2();
-                currPlayer.healthReduction(this.x,this.y,this);
-            }
-            else
-            {
-                Player currPlayer=GameScreen.getPlayer1();
-                currPlayer.healthReduction(this.x,this.y,this);
-            }
+//            if(GameScreen.getTURN()==1)
+//            {
+//                Player currPlayer=GameScreen.getPlayer2();
+//                currPlayer.healthReduction(this.x,this.y,this);
+//            }
+//            else
+//            {
+//                Player currPlayer=GameScreen.getPlayer1();
+//                currPlayer.healthReduction(this.x,this.y,this);
+//            }
 
         }
         else if( x>=361 && x<=460)
@@ -148,16 +139,16 @@ public class Weapon {
             if(this.y <limitY)
             {
                 this.blast(limitY);
-                if(GameScreen.getTURN()==1)
-                {
-                    Player currPlayer=GameScreen.getPlayer2();
-                    currPlayer.healthReduction(this.x,this.y,this);
-                }
-                else
-                {
-                    Player currPlayer=GameScreen.getPlayer1();
-                    currPlayer.healthReduction(this.x,this.y,this);
-                }
+//                if(GameScreen.getTURN()==1)
+//                {
+//                    Player currPlayer=GameScreen.getPlayer2();
+//                    currPlayer.healthReduction(this.x,this.y,this);
+//                }
+//                else
+//                {
+//                    Player currPlayer=GameScreen.getPlayer1();
+//                    currPlayer.healthReduction(this.x,this.y,this);
+//                }
             }
 
 
@@ -168,16 +159,16 @@ public class Weapon {
             {
                 this.blast(limitY);
             }
-            if(GameScreen.getTURN()==1)
-            {
-                Player currPlayer=GameScreen.getPlayer2();
-                currPlayer.healthReduction(this.x,this.y,this);
-            }
-            else
-            {
-                Player currPlayer=GameScreen.getPlayer1();
-                currPlayer.healthReduction(this.x,this.y,this);
-            }
+//            if(GameScreen.getTURN()==1)
+//            {
+//                Player currPlayer=GameScreen.getPlayer2();
+//                currPlayer.healthReduction(this.x,this.y,this);
+//            }
+//            else
+//            {
+//                Player currPlayer=GameScreen.getPlayer1();
+//                currPlayer.healthReduction(this.x,this.y,this);
+//            }
 
         }
         else if( x>=652 && x<=702) {
@@ -186,16 +177,16 @@ public class Weapon {
             {
                 this.blast(limitY);
             }
-            if(GameScreen.getTURN()==1)
-            {
-                Player currPlayer=GameScreen.getPlayer2();
-                currPlayer.healthReduction(this.x,this.y,this);
-            }
-            else
-            {
-                Player currPlayer=GameScreen.getPlayer1();
-                currPlayer.healthReduction(this.x,this.y,this);
-            }
+//            if(GameScreen.getTURN()==1)
+//            {
+//                Player currPlayer=GameScreen.getPlayer2();
+//                currPlayer.healthReduction(this.x,this.y,this);
+//            }
+//            else
+//            {
+//                Player currPlayer=GameScreen.getPlayer1();
+//                currPlayer.healthReduction(this.x,this.y,this);
+//            }
 
         }
         else if( x>=702 && x<=744) {
@@ -203,16 +194,16 @@ public class Weapon {
             if(this.y <limitY)
             {
                 this.blast(limitY);
-                if(GameScreen.getTURN()==1)
-                {
-                    Player currPlayer=GameScreen.getPlayer2();
-                    currPlayer.healthReduction(this.x,this.y,this);
-                }
-                else
-                {
-                    Player currPlayer=GameScreen.getPlayer1();
-                    currPlayer.healthReduction(this.x,this.y,this);
-                }
+//                if(GameScreen.getTURN()==1)
+//                {
+//                    Player currPlayer=GameScreen.getPlayer2();
+//                    currPlayer.healthReduction(this.x,this.y,this);
+//                }
+//                else
+//                {
+//                    Player currPlayer=GameScreen.getPlayer1();
+//                    currPlayer.healthReduction(this.x,this.y,this);
+//                }
 
             }
 
@@ -226,119 +217,6 @@ public class Weapon {
             }
 
         }
-
-
-         //this.deltaTime = delta;
-        //this.endTime = 10.0;*/
-
-
-//        this.vx = (float) (this.speed*Math.cos(this.angle*(Math.PI/180.0)));
-//        this.vy = (float) (this.speed*Math.sin(this.angle*(Math.PI/180.0)));
-
-        //double time = 0.0;
-        //while (time < this.endTime){
-        //while(this.x<t.getx() && )
-        //check the x coord range & then using eq of line, add while(y<expected)..
-       // Ground ground=new Ground();
-
-        //this.x=ux
-
-//        while(true)
-//        {
-//            //update x,y
-//
-//
-//            Float currX=getX();
-//            Float currY=getY();
-//            if (x>=0 && x<=107)
-//            {
-//                //Float limitY=ground.getEquation().get()
-//                Float limitY=GameScreen.getEquation().get(0).get(1)*currX + GameScreen.getEquation().get(0).get(1);
-//                if(currY<(limitY-5))
-//                {
-//                    this.blast();
-//                    break;
-//                }
-//            }
-//            else if( x>=107 && x<=314) {
-//                Float limitY=GameScreen.getEquation().get(1).get(1)*currX + GameScreen.getEquation().get(1).get(1);
-//                if(currY<limitY-5)
-//                {
-//                    this.blast();
-//                    break;
-//                }
-//
-//
-//            }
-//            else if( x>=314 && x<=361)
-//            {
-//                Float limitY=GameScreen.getEquation().get(2).get(1)*currX + GameScreen.getEquation().get(2).get(1);
-//                if(currY<limitY-5)
-//                {
-//                    this.blast();
-//                    break;
-//                }
-//
-//            }
-//            else if( x>=361 && x<=460)
-//            {
-//                Float limitY=GameScreen.getEquation().get(3).get(1)*currX + GameScreen.getEquation().get(3).get(1);
-//                if(currY<limitY-5)
-//                {
-//                    this.blast();
-//                    break;
-//                }
-//
-//            }
-//            else if( x>=460 && x<=652) {
-//                Float limitY=GameScreen.getEquation().get(4).get(1)*currX + GameScreen.getEquation().get(4).get(1);
-//                if(currY<limitY-5)
-//                {
-//                    this.blast();
-//                    break;
-//                }
-//
-//            }
-//            else if( x>=652 && x<=702) {
-//                Float limitY=GameScreen.getEquation().get(5).get(1)*currX + GameScreen.getEquation().get(5).get(1);
-//                if(currY<limitY-5)
-//                {
-//                    this.blast();
-//                    break;
-//                }
-//
-//            }
-//            else if( x>=702 && x<=744) {
-//                Float limitY=GameScreen.getEquation().get(6).get(1)*currX + GameScreen.getEquation().get(6).get(1);
-//                if(currY<limitY-5)
-//                {
-//                    this.blast();
-//                    break;
-//                }
-//
-//
-//            }
-//            else if( x>=744 && x<=800) {
-//                Float limitY=GameScreen.getEquation().get(7).get(1)*currX + GameScreen.getEquation().get(7).get(1);
-//                if(currY<limitY-5)
-//                {
-//                    this.blast();
-//                    break;
-//                }
-//
-//            }
-
-//            time += this.deltaTime;
-//            this.x += (float)(this.vx*this.deltaTime);
-//            this.y += (float)(this.vy*this.deltaTime);
-//
-//            //change position..
-//
-//            this.vx += this.ax*this.deltaTime;
-//            this.vy += this.ay*this.deltaTime;
-        //}
-
-
     }
 
 

@@ -20,16 +20,14 @@ public class Tank
     private ArrayList<Weapon> weapons=new ArrayList<>();
     private Player player;
     private Fuel fuel;
-
-    //add
     private Texture tankBodyImage;
     private Texture tankNozzleImage;
     private Texture tankCapImage;
 
-     Sprite tankNozzlesprite;
-    Sprite tankBodysprite;
+    private Sprite tankNozzlesprite;
+    private Sprite tankBodysprite;
 
-    int flag=0;
+    private int flag=0;
 
     private Float speed=50f;
     public Tank(Float x,Float y,Float width,Float height,String name)
@@ -41,16 +39,12 @@ public class Tank
         this.bodyHeight=0.57f*this.height;
         this.nozzleHeight=this.height-this.bodyHeight;
         this.name=name;
-        //this.player=player;
         this.fuel=new Fuel();
 
         //change
         String player_Tank=this.getName();
-        ///String player2_Tank=player1.getTank().getName();
         String name_body=player_Tank+"_body.png";
-        //String name2_body=player2_Tank+"_body.png";
         String name_nozzle=player_Tank+"_nozzle.png";
-        //String name2_nozzle=player2_Tank+"_nozzle.png";
 
         tankBodyImage=new Texture(name_body);
         tankNozzleImage=new Texture(name_nozzle);
@@ -61,7 +55,6 @@ public class Tank
 
     public void setAngle()//Tank tank,Sprite tankNozzlesprite,Sprite tankBodysprite)
     {
-        //System.out.println(flag);
         if (Gdx.input.justTouched())
         {
             flag++;
@@ -107,19 +100,27 @@ public class Tank
         tankBodysprite.setSize(this.getWidth(), this.getBodyHeight());
 
        // tankCapsprite
+
 //        int tank_origin=calcIndex(tank.getx());
 //        slope=equation.get(tank_origin).get(0);
 //        tank_angle=Math.atan(slope);
 //        float tank_midpoint= (float) (((tank.getWidth())/(Math.cos(tank_angle))/2)-10);
 //        idx=calcIndex((float) ((tank.getx()+tank_midpoint)));
-        idx=GameScreen.calcIndex(tank_x);
-        if (idx==2) {
-            if (tank_x>=313) idx++;}
-        if (idx==3) {
-            if (tank_x>=447) idx++;}
-        if (idx==4) {
-            if (tank_x>=622) idx++;}
 
+        idx=GameScreen.calcIndex(tank_x);
+        if (GameScreen.getTURN()==1)
+        {
+            if (idx == 2) {
+                if (tank_x >= 313) idx++;
+            }
+            if (idx == 3) {
+                if (tank_x >= 447) idx++;
+            }
+            if (idx == 4) {
+                if (tank_x >= 622) idx++;
+            }
+
+        }
         slope=GameScreen.getEquation().get(idx).get(0);
         tank_angle=(Math.toDegrees(Math.atan(slope)));
         tankBodysprite.setRotation((int)tank_angle);
@@ -137,7 +138,7 @@ public class Tank
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
         {      //left
             idx=GameScreen.calcIndex(x);
-            this.setx(this.getx() - this.getSpeed()*delta);// Gdx.graphics.getDeltaTime());
+            this.setx(this.getx() - this.getSpeed()*delta);
             this.sety(GameScreen.getEquation().get(idx).get(0) * this.getx() + GameScreen.getEquation().get(idx).get(1));
         }
 
@@ -160,12 +161,21 @@ public class Tank
 
     }
 
-    public void fireNuke()
+    public void fireNuke(Weapon weapon,MyGdxGame game,float delta,Texture nukeImage )
     {
+        //game.getBatch().begin();
+        //System.out.println((weapon.isBulletDead));
+//        if (weapon.isBulletDead==0) {
+//            weapon.projectileMotion(delta);
+//            game.getBatch().draw(nukeImage, weapon.getX(), weapon.getY(), weapon.getWidth(), weapon.getHeight());
+//        }
+//        else  GameScreen.change_Turn(GameScreen.getTURN());
+//        game.getBatch().end();
 
 
 
     }
+
 
     public Float getx() {
         return x;

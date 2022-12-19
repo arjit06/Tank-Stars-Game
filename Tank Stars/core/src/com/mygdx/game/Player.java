@@ -2,12 +2,15 @@ package com.mygdx.game;
 
 public class Player
 {
+   // private int number;
     private Tank tank;
     private Weapon currWeapon;
     private Health health;
     public Player(Tank t)
     {
         this.tank=t;
+        //this.tank.setPlayer(this);
+       // this.number=number;
     }
 
     //private Tank tank;
@@ -123,6 +126,8 @@ public class Player
             {
                 damage=15;
             }
+
+
             this.getHealth().reduceHealth(80.00-damage);
             //this.setHealth(80f);
         }

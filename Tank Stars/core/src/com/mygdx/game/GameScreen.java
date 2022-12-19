@@ -17,58 +17,76 @@ public class GameScreen implements Screen
     private final MyGdxGame game;
     private static int TURN=1;
     private OrthographicCamera camera;
-    //    private Texture tankBodyImage;
-//    private Texture tankNozzleImage;
-//    private Texture tankCapImage;
     private Texture ground;
     private Texture  health_bar_bg;
     private Texture  health_bar;
-
     private Texture bg;
-
     private Texture nukeImage;
-    private Tank tank;
     private Float next;
-
-    private World world;
-    private Box2DDebugRenderer debugRenderer;
-//    private Sprite tankNozzlesprite;
-//    private Sprite tankBodysprite;
-//    private Sprite tankCapsprite;
-
+    //private World world;
+    ///private Box2DDebugRenderer debugRenderer;
     private static ArrayList<ArrayList<Float>> equation=new ArrayList<ArrayList<Float>> ();
-
     private static Player player1;
     private static Player player2;
     private Weapon weapon;
-    int flag=0;
-    int cnt=0;
-    int start=0;
+    private int flag=0;
+    private int cnt=0;
+    private int nukeFlag=0;
+    private static int start=0;
 
 
     public GameScreen(MyGdxGame game)
     {
-        //tank=new Tank(50f,111f,80f,60f);
-        weapon=new Weapon("missile",50.0,50f,111f,50f,50f);
-
+        createSpritesAndTextures();
         this.player1=SetPlayer.getPlayer1();
         this.player2=SetPlayer.getPlayer2();
+
+        initializePlayerTanks();
 
         this.game=game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
-//        tankCapImage=new Texture("burratino_cap.png");
+        //create the arraylist containg slopes and constants in (m,c) form for y=mx+c
+        createEquationArrayList();
+    }
+
+    public void initializePlayerTanks()
+    {
+        Tank t=player2.getTank();
+        t.getTankNozzlesprite().setOrigin(0,0);
+        t.getTankNozzlesprite().setPosition(t.getx(),t.gety()+t.getBodyHeight());
+        t.getTankNozzlesprite().setSize(t.getWidth(), t.getNozzleHeight());
+
+
+        t.getTankBodysprite().setOrigin(0,0);
+        t.getTankBodysprite().setPosition(t.getx(),t.gety());
+        t.getTankBodysprite().setSize(t.getWidth(), t.getBodyHeight());
+
+        t=player1.getTank();
+        t.getTankNozzlesprite().setOrigin(0,0);
+        t.getTankNozzlesprite().setPosition(t.getx(),t.gety()+t.getBodyHeight());
+        t.getTankNozzlesprite().setSize(t.getWidth(), t.getNozzleHeight());
+
+
+        t.getTankBodysprite().setOrigin(0,0);
+        t.getTankBodysprite().setPosition(t.getx(),t.gety());
+        t.getTankBodysprite().setSize(t.getWidth(), t.getBodyHeight());
+
+
+    }
+
+    public void createSpritesAndTextures()
+    {
+
         nukeImage=new Texture("nuke.png");
+//        tankCapImage=new Texture("burratino_cap.png");
 
         ground=new Texture("ground.png");
         bg=new Texture("game_screen_bg.png");
         health_bar_bg=new Texture("health_bar_border.png");
         health_bar=new Texture("blue_health_bar.png");
 
-
-        //create the arraylist containg slopes and constants in (m,c) form for y=mx+c
-        createEquationArrayList();
     }
 
     public static  int calcIndex(Float x)
@@ -87,7 +105,7 @@ public class GameScreen implements Screen
 
     public void box2d()
     {
-        world = new World(new Vector2(0, -10), true);
+       // world = new World(new Vector2(0, -10), true);
 //        debugRenderer = new Box2DDebugRenderer();
 //        world.step(1/60f, 6, 2);
 //
@@ -158,13 +176,77 @@ public class GameScreen implements Screen
         equation.add(i8);
     }
 
-    public void change_Turn(int t)
+    public static void change_Turn(int t)
     {
+        start=0;
+        player1.getTank().setFlag(0);
+        player2.getTank().setFlag(0);
         if (t==1)
         {
             TURN=2;
         }
-        else TURN=1;
+        else
+        {
+            TURN=1;
+        }
+    }
+
+    public void handleTurns(float delta)
+    {
+        if (TURN==1) //player one turn
+        {
+            player1.getTank().update();  //update tank and nozzle sprites position , angles
+            player1.getTank().setAngle();  //set angle (aiming mechanism)
+            player1.getTank().handle_tank_movement(delta);  //handle movement for tank
+
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.T)) change_Turn(TURN); //change turn
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.F)) //fire
+            {
+                weapon=new Weapon("missile",50.0,50f,111f,50f,50f);
+                start = 1;
+            }
+
+            if (start==1)
+            {
+//                player1.getTank().fireNuke(this.weapon,game,delta,nukeImage);
+                if (weapon.isBulletDead==0) {
+                    weapon.projectileMotion(delta);
+                    if (weapon.isBulletDead==0) nukeFlag=1;
+                    //game.getBatch().draw(nukeImage, weapon.getX(), weapon.getY(), weapon.getWidth(), weapon.getHeight());
+                }
+                else  GameScreen.change_Turn(GameScreen.getTURN());
+            }
+
+        }
+
+        else //player two turn
+        {
+            player2.getTank().update();  //update tank and nozzle sprites position , angles
+            player2.getTank().setAngle(); //set angle (aiming mechanism)
+            player2.getTank().handle_tank_movement(delta); //handle movement for tank
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.T)) change_Turn(TURN);
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.F)) //fire
+            {
+                weapon=new Weapon("missile",50.0,50f,111f,50f,50f);
+                start = 1;
+            }
+
+            if (start==1)
+            {
+//                player2.getTank().fireNuke(this.weapon,game,delta,nukeImage);
+                if (weapon.isBulletDead==0) {
+                    weapon.projectileMotion(delta);
+                    if (weapon.isBulletDead==0) nukeFlag=1;
+                    //game.getBatch().draw(nukeImage, weapon.getX(), weapon.getY(), weapon.getWidth(), weapon.getHeight());
+                }
+                else  GameScreen.change_Turn(GameScreen.getTURN());
+            }
+        }
+
     }
 
     @Override
@@ -176,47 +258,12 @@ public class GameScreen implements Screen
     @Override
     public void render(float delta)
     {
+        nukeFlag=0;
         ScreenUtils.clear(0, 0, 0.2f, 1);
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
 
-        if (TURN==1) //player one turn
-        {
-            player1.getTank().update();  //update tank and nozzle sprites position , angles
-            player1.getTank().setAngle();  //set angle (aiming mechanism)
-            player1.getTank().handle_tank_movement(delta);  //handle movement for tank
-
-            if (Gdx.input.isKeyPressed(Input.Keys.F)) start=1; //fire
-            if (start==1)
-            {
-                //System.out.println((weapon.isBulletDead));
-                if (weapon.isBulletDead==0) {
-                    weapon.projectileMotion(delta);
-                    game.getBatch().draw(nukeImage, weapon.getX(), weapon.getY(), weapon.getWidth(), weapon.getHeight());
-                }
-            }
-            change_Turn(TURN);
-        }
-
-        else //player two turn
-        {
-            player2.getTank().update();  //update tank and nozzle sprites position , angles
-            player2.getTank().setAngle(); //set angle (aiming mechanism)
-            player2.getTank().handle_tank_movement(delta); //handle movement for tank
-
-            if (Gdx.input.isKeyPressed(Input.Keys.F)) start=1; //fire
-            if (start==1)
-            {
-                //System.out.println((weapon.isBulletDead));
-                if (weapon.isBulletDead==0) {
-                    weapon.projectileMotion(delta);
-                    game.getBatch().draw(nukeImage, weapon.getX(), weapon.getY(), weapon.getWidth(), weapon.getHeight());
-                }
-
-
-            }
-            change_Turn(TURN);
-        }
+        handleTurns(delta);
 
         //render objects on screen
         game.getBatch().begin();
@@ -224,10 +271,13 @@ public class GameScreen implements Screen
         game.getBatch().draw(ground,0,0,800,200);
         game.getBatch().draw(health_bar_bg,135,400,300,50);
         game.getBatch().draw(health_bar,137,402,296,56);
-        player1.getTank().tankBodysprite.draw(game.getBatch());
-        player2.getTank().tankBodysprite.draw(game.getBatch());
-        player1.getTank().tankNozzlesprite.draw(game.getBatch());
-        player2.getTank().tankNozzlesprite.draw(game.getBatch());
+
+        if (nukeFlag==1) game.getBatch().draw(nukeImage, weapon.getX(), weapon.getY(), weapon.getWidth(), weapon.getHeight());
+
+        player1.getTank().getTankBodysprite().draw(game.getBatch());
+        player2.getTank().getTankBodysprite().draw(game.getBatch());
+        player1.getTank().getTankNozzlesprite().draw(game.getBatch());
+        player2.getTank().getTankNozzlesprite().draw(game.getBatch());
 
         game.getBatch().end();
 
@@ -260,11 +310,6 @@ public class GameScreen implements Screen
 
     @Override
     public void dispose() {
-
-    }
-
-    public void fire(Player player)
-    {
 
     }
 
@@ -348,36 +393,12 @@ public class GameScreen implements Screen
         this.nukeImage = nukeImage;
     }
 
-    public Tank getTank() {
-        return tank;
-    }
-
-    public void setTank(Tank tank) {
-        this.tank = tank;
-    }
-
     public Float getNext() {
         return next;
     }
 
     public void setNext(Float next) {
         this.next = next;
-    }
-
-    public World getWorld() {
-        return world;
-    }
-
-    public void setWorld(World world) {
-        this.world = world;
-    }
-
-    public Box2DDebugRenderer getDebugRenderer() {
-        return debugRenderer;
-    }
-
-    public void setDebugRenderer(Box2DDebugRenderer debugRenderer) {
-        this.debugRenderer = debugRenderer;
     }
 
     public static void setEquation(ArrayList<ArrayList<Float>> equation) {
@@ -432,16 +453,8 @@ public class GameScreen implements Screen
         this.start = start;
     }
 
-    //    +pauseGame() : void
-//    +fire(): void
-//    +chooseWeapon() : void
-//    +spawnAirDrop(): void
-//    +computeDamage(): void
-
     public static ArrayList<ArrayList<Float>> getEquation() {
         return equation;
     }
-
-
 
 }
