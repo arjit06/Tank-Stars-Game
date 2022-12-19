@@ -16,7 +16,7 @@ public class Weapon {
     private Float bodyHeight;
 
     private Float speed;//=200f;
-    private double deltaTime;
+    private Float t=0f;
     private float ay=9.8f;
     private float ax=0;
     private float angle;
@@ -31,7 +31,7 @@ public class Weapon {
     int isBulletDead=0;
     int cnt=0;
 
-    public Weapon(String name, Double maxDamagePercent, Float x, Float y, Float width, Float height) {
+    public Weapon(String name, Double maxDamagePercent, Float x, Float y, Float width, Float height,float angle) {
         this.name = name;
         this.maxDamagePercent = maxDamagePercent;
         this.x = x;
@@ -41,7 +41,7 @@ public class Weapon {
         this.speed=85f;
         this.width = width;
         this.height = height;
-        this.angle=50f;
+        this.angle=angle;
         this.A= (float) Math.tan(Math.toRadians(angle));
         this.B= (float) (ay/(2*speed*speed* Math.cos(Math.toRadians(angle)) * Math.cos(Math.toRadians(angle) )));
         ux= (float) (speed*Math.cos(Math.toRadians(angle)));
@@ -54,7 +54,7 @@ public class Weapon {
     public void blast(Float limitY)
     {
 
-        if (cnt>50)
+       // if (cnt>50)
         {
             this.isBulletDead=1;
         }
@@ -66,15 +66,24 @@ public class Weapon {
 
     public void projectileMotion(Float delta)
     {
+
+
+
         delta=delta*4;
+        t+=delta;
         cnt++;
 
         if (this.isBulletDead==1) return;
 
-        this.x+=ux*delta;
-        this.y=A*x-(B*x*x);
+        //this.x+=ux*delta;
+        this.x=x0+ ux*t;
+        //this.y=A*x-(B*x*x);
+
+        this.y=y0+ uy*t-(4.9f*t*t);
         if (cnt==1) diff=this.y0-this.y;
         this.y+=diff;
+
+        if (x<0 || x>800) this.blast((float) 0);
 
         if (x>=0 && x<=107)
         {

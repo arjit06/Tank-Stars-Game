@@ -27,7 +27,7 @@ public class Tank
     private Sprite tankNozzlesprite;
     private Sprite tankBodysprite;
 
-    private int flag=0;
+    private int flag=0,angle_flag=0;
 
     private Float speed=50f;
     public Tank(Float x,Float y,Float width,Float height,String name)
@@ -74,8 +74,8 @@ public class Tank
             else if (angle > 90 && angle <= 180) {
                 tankNozzlesprite.setRotation((int)angle);
                 //tankBodysprite.setFlip(false,true);
-                tankBodysprite.flip(true, false);
-                tankNozzlesprite.flip(true, false);
+//                tankBodysprite.flip(true, false);
+//                tankNozzlesprite.flip(true, false);
                 //tankNozzlesprite.setRotation(90-((int)angle-90));
             }
         }
@@ -241,21 +241,7 @@ public class Tank
         this.name = name;
     }
 
-    public Float getX() {
-        return x;
-    }
 
-    public void setX(Float x) {
-        this.x = x;
-    }
-
-    public Float getY() {
-        return y;
-    }
-
-    public void setY(Float y) {
-        this.y = y;
-    }
 
     public ArrayList<Weapon> getWeapons() {
         return weapons;

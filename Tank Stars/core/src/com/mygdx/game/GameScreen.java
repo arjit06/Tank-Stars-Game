@@ -195,6 +195,7 @@ public class GameScreen implements Screen
     {
         if (TURN==1) //player one turn
         {
+            Tank t=player1.getTank();
             player1.getTank().update();  //update tank and nozzle sprites position , angles
             player1.getTank().setAngle();  //set angle (aiming mechanism)
             player1.getTank().handle_tank_movement(delta);  //handle movement for tank
@@ -204,7 +205,11 @@ public class GameScreen implements Screen
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.F)) //fire
             {
-                weapon=new Weapon("missile",50.0,50f,111f,50f,50f);
+                float w=t.getWidth();
+                float a=t.getTankNozzlesprite().getRotation()-t.getTankBodysprite().getRotation();
+                float weapon_x= (float) ((t.getx()) + w*(Math.cos(a)));
+                float weapon_y= (float) ((t.gety()+t.getBodyHeight())+w*(Math.sin(a)));
+                weapon=new Weapon("missile",50.0,weapon_x,weapon_y,80f,80f,player1.getTank().getTankNozzlesprite().getRotation());
                 start = 1;
             }
 
@@ -223,6 +228,7 @@ public class GameScreen implements Screen
 
         else //player two turn
         {
+            Tank t=player2.getTank();
             player2.getTank().update();  //update tank and nozzle sprites position , angles
             player2.getTank().setAngle(); //set angle (aiming mechanism)
             player2.getTank().handle_tank_movement(delta); //handle movement for tank
@@ -231,7 +237,11 @@ public class GameScreen implements Screen
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.F)) //fire
             {
-                weapon=new Weapon("missile",50.0,50f,111f,50f,50f);
+                float w=t.getWidth();
+                float a=t.getTankNozzlesprite().getRotation()-t.getTankBodysprite().getRotation();
+                float weapon_x= (float) ((t.getx()) + w*(Math.cos(a)));
+                float weapon_y= (float) ((t.gety()+t.getBodyHeight())+w*(Math.sin(a)));
+                weapon=new Weapon("missile",50.0,weapon_x,weapon_y,80f,80f,player2.getTank().getTankNozzlesprite().getRotation());
                 start = 1;
             }
 
@@ -269,8 +279,8 @@ public class GameScreen implements Screen
         game.getBatch().begin();
         game.getBatch().draw(bg,0,0,800,480);
         game.getBatch().draw(ground,0,0,800,200);
-        game.getBatch().draw(health_bar_bg,135,400,300,50);
-        game.getBatch().draw(health_bar,137,402,296,56);
+       // game.getBatch().draw(health_bar_bg,135,400,300,50);
+        game.getBatch().draw(health_bar,173,432,200,30);
 
         if (nukeFlag==1) game.getBatch().draw(nukeImage, weapon.getX(), weapon.getY(), weapon.getWidth(), weapon.getHeight());
 
