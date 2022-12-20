@@ -23,8 +23,8 @@ public class MyGdxGame extends Game {
 		batch = new SpriteBatch(); //used to render objects on the screen
 		font =new BitmapFont(); // used to render text on the screen
 		HomeScreen homeScreen=HomeScreen.getInstance(this); //singleton design pattern
-		this.setScreen(homeScreen /* composition relation */ );
-		//this.setScreen(new GameScreen(this,new MainScreen(this)));
+		//this.setScreen(homeScreen /* composition relation */ );
+		this.setScreen(new GameScreen(this,new MainScreen(this)));
 
 	}
 

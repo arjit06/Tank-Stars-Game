@@ -3,8 +3,10 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -15,8 +17,10 @@ import java.util.ArrayList;
 public class GameScreen implements Screen
 {
     private final MyGdxGame game;
+    private BitmapFont font;
     private static int TURN=1;
     private OrthographicCamera camera;
+
     private Texture ground;
     private Texture  health_bar_bg;
     private Texture  health_bar;
@@ -38,6 +42,8 @@ public class GameScreen implements Screen
     private static int start=0;
     float weapon_x,weapon_y;
     private MainScreen mainScreen;
+    float power_red_Width_p1=75,power_red_Width_p2=75,weapon_speed_p1=85f,weapon_speed_p2=85f;
+    float health_width_p1=200,health_width_p2=200;
 
 
     public GameScreen(MyGdxGame game,MainScreen mainScreen)
@@ -108,6 +114,11 @@ public class GameScreen implements Screen
         power_black=new Texture("power_black.png");
         chance=new Texture("chance.png");
         pauseButton=new Texture("pause_button.png");
+        font = new BitmapFont();
+        font.setColor(Color.WHITE);
+
+        //font.getData().setScale(1.3F, 1.3F);
+
 
     }
 
@@ -226,6 +237,18 @@ public class GameScreen implements Screen
                 game.setScreen(new PauseMenu(game,this));
             }
 
+            if (Gdx.input.justTouched() && Gdx.input.getX()>=78 && Gdx.input.getX()<=224 && Gdx.input.getY()>=405 && Gdx.input.getY()<=449)
+            { //power button
+                power_red_Width_p1=Gdx.input.getX()-74;
+                float p=(power_red_Width_p1*2)/3;
+                player1.getTank().setPower(p);
+
+//                player1.getCurrWeapon().setSpeed(p);
+//                System.out.println(player1.getCurrWeapon().getSpeed());
+            }
+            weapon_speed_p1= player1.getTank().getPower();
+
+
 
             Tank t=player1.getTank();
             player1.getTank().update();  //update tank and nozzle sprites position , angles
@@ -256,8 +279,10 @@ public class GameScreen implements Screen
                 t.getNukeSprite().setPosition(weapon_x,weapon_y);
                 t.getNukeSprite().setSize(80f,80f);
 
-                weapon=new Weapon("missile",50.0,weapon_x,weapon_y,80f,80f,player1.getTank().getTankNozzlesprite().getRotation());
+                //System.out.println(weapon_speed_p1);
+                weapon=new Weapon("missile",30.0,weapon_x,weapon_y,80f,80f,player1.getTank().getTankNozzlesprite().getRotation(),weapon_speed_p1);
                 player1.setCurrWeapon(weapon);
+                //player1.getCurrWeapon().setSpeed(weapon_speed_p1);
                 //t.getNukeSprite().setRotation(weapon.getAngle());
 
                 start = 1;
@@ -277,6 +302,7 @@ public class GameScreen implements Screen
                 }
                 else  GameScreen.change_Turn(GameScreen.getTURN());
             }
+            health_width_p2= (float) player2.getHealth().getPercent()*2;
 
         }
 
@@ -289,6 +315,19 @@ public class GameScreen implements Screen
 
             Tank t=player2.getTank();
             player2.getTank().update();  //update tank and nozzle sprites position , angles
+
+            if (Gdx.input.justTouched() && Gdx.input.getX()>=78 && Gdx.input.getX()<=224 && Gdx.input.getY()>=405 && Gdx.input.getY()<=449)
+            { //power button
+                power_red_Width_p2=Gdx.input.getX()-74;
+                float p=(power_red_Width_p2*2)/3;
+                player2.getTank().setPower(p);
+//                player2.getCurrWeapon().setSpeed(p);
+//                System.out.println(player2.getCurrWeapon().getSpeed());
+            }
+
+            weapon_speed_p2= player2.getTank().getPower();
+
+
 
             if (Gdx.input.justTouched() && Gdx.input.getX()>=548 && Gdx.input.getX()<=620 && Gdx.input.getY()>=391 && Gdx.input.getY()<=461)
             {
@@ -315,9 +354,10 @@ public class GameScreen implements Screen
                 t.getNukeSprite().setPosition(weapon_x,weapon_y);
                 t.getNukeSprite().setSize(80f,80f);
 
-                weapon=new Weapon("missile",50.0,weapon_x,weapon_y,80f,80f,player2.getTank().getTankNozzlesprite().getRotation());
+                weapon=new Weapon("missile",50.0,weapon_x,weapon_y,80f,80f,player2.getTank().getTankNozzlesprite().getRotation(),weapon_speed_p2);
                 //t.getNukeSprite().setRotation(weapon.getAngle());
                 player2.setCurrWeapon(weapon);
+                //player2.getCurrWeapon().setSpeed(weapon_speed_p2);
 
 
                 start = 1;
@@ -338,6 +378,8 @@ public class GameScreen implements Screen
                 }
                 else  GameScreen.change_Turn(GameScreen.getTURN());
             }
+            health_width_p1= (float) player1.getHealth().getPercent()*2;
+
         }
 
     }
@@ -372,6 +414,10 @@ public class GameScreen implements Screen
 
         handleTurns(delta);
 
+        //System.out.println(player2.getHealth().getPercent());
+
+        if (player1.getHealth().getPercent()<=0 || player2.getHealth().getPercent()<=0) game.setScreen(new GameOverScreen(game,mainScreen));
+
         //render objects on screen
 
 
@@ -380,20 +426,32 @@ public class GameScreen implements Screen
         game.getBatch().draw(pauseButton,21,412,60,60);
 
         game.getBatch().draw(health_bar_bg,167,416,212,52);
-        game.getBatch().draw(health_bar,173,422,200,40);
+        game.getBatch().draw(health_bar,173,422,health_width_p1,40);
         game.getBatch().draw(medal,142,412,51,58);
+        font.draw(game.getBatch(), String.valueOf(player1.getHealth().getPercent()), 237, 450);
 
         game.getBatch().draw(vs,390,412,56,52);
 
         game.getBatch().draw(health_bar_bg,488,416,212,52);
-        game.getBatch().draw(health_bar,494,422,200,40);
+        game.getBatch().draw(health_bar,494,422,health_width_p2,40);
         game.getBatch().draw(medal,463,412,51,58);
+        font.draw(game.getBatch(), String.valueOf(player2.getHealth().getPercent()), 237+321, 450);
 
         game.getBatch().draw(fire,314,20,150,60);
         game.getBatch().draw(aim,552,17,70,70);
 
         game.getBatch().draw(power_black,70,20,158,60); //power bg
-        game.getBatch().draw(power_red,74,24,75,52); //power
+        if (TURN==1)
+        {
+            game.getBatch().draw(power_red, 74, 24, power_red_Width_p1, 52);
+            font.draw(game.getBatch(), String.valueOf(player1.getTank().getPower()), 125, 55);
+        }//power
+        else
+        {
+            game.getBatch().draw(power_red,74,24,power_red_Width_p2,52); //power
+            font.draw(game.getBatch(), String.valueOf(player2.getTank().getPower()), 125, 55);
+        }
+
 
         if (nukeFlag==1 && TURN==1) player1.getTank().getNukeSprite().draw(game.getBatch());//nukeImage, weapon.getX(), weapon.getY(), weapon.getWidth(), weapon.getHeight());
         else if (nukeFlag==1 && TURN==2) player2.getTank().getNukeSprite().draw(game.getBatch());

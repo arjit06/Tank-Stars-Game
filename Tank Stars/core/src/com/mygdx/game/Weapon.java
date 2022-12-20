@@ -19,7 +19,7 @@ public class Weapon {
     private Float t=0f;
     private float ay=9.8f;
     private float ax=0;
-    private float angle;
+    private float angle,angle_with_ground;
     private float vx;
     private float vy;
     private float ux;
@@ -31,17 +31,18 @@ public class Weapon {
     int isBulletDead=0;
     int cnt=0;
 
-    public Weapon(String name, Double maxDamagePercent, Float x, Float y, Float width, Float height,float angle) {
+    public Weapon(String name, Double maxDamagePercent, Float x, Float y, Float width, Float height,float angle,float speed) {
         this.name = name;
         this.maxDamagePercent = maxDamagePercent;
         this.x = x;
         this.x0=x;
         this.y = y;
         this.y0=y;
-        this.speed=85f;
+        this.speed=speed;
         this.width = width;
         this.height = height;
         this.angle=angle;
+        this.angle_with_ground=angle;
         this.A= (float) Math.tan(Math.toRadians(angle));
         this.B= (float) (ay/(2*speed*speed* Math.cos(Math.toRadians(angle)) * Math.cos(Math.toRadians(angle) )));
         ux= (float) (speed*Math.cos(Math.toRadians(angle)));
@@ -57,6 +58,16 @@ public class Weapon {
        // if (cnt>50)
         {
             this.isBulletDead=1;
+            if(GameScreen.getTURN()==1)
+            {
+                Player currPlayer=GameScreen.getPlayer2();
+                currPlayer.healthReduction(this.x,this.y,this);
+            }
+            else
+            {
+                Player currPlayer=GameScreen.getPlayer1();
+                currPlayer.healthReduction(this.x,this.y,this);
+            }
         }
 
         //code
@@ -82,6 +93,8 @@ public class Weapon {
 
         this.y=y0+ uy*t-(4.9f*t*t);
 
+        //this.angle_with_ground=Math.toDegrees(Math.atan(y))
+
         vy= (float) (uy-4.9*t);
         this.angle= (float) Math.toDegrees( Math.atan(vy/vx));
 
@@ -89,7 +102,7 @@ public class Weapon {
         if (cnt==1) diff=this.y0-this.y;
         this.y+=diff;
         //System.out.println(x0+" "+x+" "+y);
-        if (x<0 || x>800) this.blast((float) 0);
+        if (x<0 || x>800)  this.isBulletDead=1;
 
         if (x>=0 && x<=107)
         {

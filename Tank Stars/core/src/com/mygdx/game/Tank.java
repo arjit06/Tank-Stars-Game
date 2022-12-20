@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public class Tank
 {
     private String name;
-    private Float x;
-    private Float y;
+    private Float x,x2;
+    private Float y,y2;
     private Float width;
     private Float height;
     private Float bodyHeight;
@@ -33,17 +33,20 @@ public class Tank
 
     private int flag=0,angle_flag=0;
 
-    private Float speed=50f;
+    private Float speed=50f,power=75f;
     public Tank(Float x,Float y,Float width,Float height,String name)
     {
         this.x=x;
+        this.x2=this.x+width;
 
         this.y=y;
+        //this.y2=this.
         this.width=width;
         this.height=height;
         this.bodyHeight=0.57f*this.height;
         this.nozzleHeight=this.height-this.bodyHeight;
         this.name=name;
+       // this.speed=this.power/2;
         this.fuel=new Fuel();
 
         //change
@@ -177,6 +180,8 @@ public class Tank
         {
             this.setx(800 - this.getWidth());
         }
+
+        this.x2=this.x+width;
 
     }
 
@@ -358,5 +363,19 @@ public class Tank
         this.tankCapsprite = tankCapsprite;
     }
 
+    public Float getPower() {
+        return power;
+    }
 
+    public void setPower(Float power) {
+        this.power = power;
+    }
+
+    public Float getX2() {
+        return x2;
+    }
+
+    public void setX2(Float x2) {
+        this.x2 = x2;
+    }
 }
