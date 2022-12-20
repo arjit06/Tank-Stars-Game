@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class BuratinoTank extends Tank{
     private ArrayList<Weapon> weapons;
     private ArrayList<Weapon> currWeapons;
-    public BuratinoTank(Float x, Float y, Float width, Float height) {
-        super(x, y, width, height,"burratino");
+    public BuratinoTank(Float x, Float y, Float width, Float height,int number) {
+        super(x, y, width, height,"burratino",number);
     }
     public void fireWeapon()
     {

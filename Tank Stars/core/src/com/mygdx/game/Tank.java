@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public class Tank
 {
     private String name;
-    private Float x,x2;
-    private Float y,y2;
+    private Float x,x2,xi;
+    private Float y,y2,yi;
     private Float width;
     private Float height;
     private Float bodyHeight;
@@ -33,27 +33,33 @@ public class Tank
 
     private int flag=0,angle_flag=0;
 
-    private Float speed=50f,power=75f;
-    public Tank(Float x,Float y,Float width,Float height,String name)
+    private Float speed=50f,power=50f;
+    int number;
+    public Tank(Float x,Float y,Float width,Float height,String name,int number)
     {
         this.x=x;
-        this.x2=this.x+width;
+
 
         this.y=y;
         //this.y2=this.
         this.width=width;
         this.height=height;
+        this.x2=this.x+width;
+        this.y2=this.y+height;
         this.bodyHeight=0.57f*this.height;
         this.nozzleHeight=this.height-this.bodyHeight;
         this.name=name;
        // this.speed=this.power/2;
         this.fuel=new Fuel();
+        this.number=number;
 
         //change
         String player_Tank=this.getName();
-        String name_body=player_Tank+"_body.png";
-        String name_nozzle=player_Tank+"_nozzle.png";
+        String name_body=player_Tank+"_body_p"+String.valueOf(this.number)+".png";
+        String name_nozzle=player_Tank+"_nozzle_p1.png";//_nozzle_p"+String.valueOf(this.number)+".png";
         String name_cap=player_Tank+"_cap.png";
+
+       // System.out.println(name_body);
 
         tankBodyImage=new Texture(name_body);
         tankNozzleImage=new Texture(name_nozzle);
@@ -82,16 +88,30 @@ public class Tank
             int mouse_x = Gdx.input.getX();
             int mouse_y = Gdx.input.getY();
             mouse_y=480-mouse_y;
-            double angle =(Math.toDegrees(Math.atan(((mouse_y-this.gety())/(mouse_x-this.getx())))));
+            double num=(mouse_y-this.gety());
+            double denom=(mouse_x-this.getx());
+            double fraction=num/denom;
 
-            if ( angle <= 90) tankNozzlesprite.setRotation((int)angle);
-            else if (angle > 90 && angle <= 180) {
-                tankNozzlesprite.setRotation((int)angle);
+            if (this.number==1) {
+                double angle = (Math.toDegrees(Math.atan(fraction)));
+
+                if (angle <= 90) tankNozzlesprite.setRotation((int) angle);
+//                else if (angle > 90 && angle <= 180) {
+//                    tankNozzlesprite.setRotation((int) angle);
+//                }
+            }
+            else
+            {
+                fraction*=-1;
+                double angle = (Math.toDegrees(Math.atan(fraction)));
+                if (num>=0 && denom<=0) tankNozzlesprite.setRotation(180-(int) angle);
+
+            }
                 //tankBodysprite.setFlip(false,true);
-//                tankBodysprite.flip(true, false);
+//                tankBodysprite.flip(true, false); ..........
 //                tankNozzlesprite.flip(true, false);
                 //tankNozzlesprite.setRotation(90-((int)angle-90));
-            }
+
         }
         else GameScreen.angle_flag=0;
 
@@ -106,17 +126,41 @@ public class Tank
         float tank_x=(float) ((this.getx()));
         angle_diff= tankNozzlesprite.getRotation()-tankBodysprite.getRotation();
 
-        tankNozzlesprite.setOrigin(0,0);
-        tankNozzlesprite.setPosition(this.getx(),this.gety()+this.getBodyHeight());
+        if (this.number==1) tankNozzlesprite.setOrigin(0,0);
+        else tankNozzlesprite.setOrigin(0,0);
+
+        if (this.number==1) tankNozzlesprite.setPosition(this.x,this.y+this.getBodyHeight());
+        else tankNozzlesprite.setPosition(this.getx()+this.width,this.gety()+this.getBodyHeight());
+
+
+
         tankNozzlesprite.setSize(this.getWidth(), this.getNozzleHeight());
+       // if (this.player.getNumber()==2) tankNozzlesprite.flip(true, false);
+
 
 
         tankBodysprite.setOrigin(0,0);
         tankBodysprite.setPosition(this.getx(),this.gety());
         tankBodysprite.setSize(this.getWidth(), this.getBodyHeight());
+       //if (this.player.getNumber()==2) tankBodysprite.flip(true, false);
 
-        if (this.name.equals("abrams")) tankCapsprite.setPosition(this.getTankNozzlesprite().getX()+10, this.getTankNozzlesprite().getY());
-        else  tankCapsprite.setPosition(this.getTankNozzlesprite().getX(), this.getTankNozzlesprite().getY());
+//        int offset;
+//        if (this.number==1) offset=10;
+//        //else offset=
+
+        if (this.name.equals("abrams"))
+        {
+            if (this.number==1)tankCapsprite.setPosition(this.getTankNozzlesprite().getX() + 10, this.getTankNozzlesprite().getY());
+            //else tankCapsprite.setPosition(this.x +this.width-10 , this.getTankBodysprite().getHeight());
+        }
+        else
+        {
+            if (this.number==1)tankCapsprite.setPosition(this.getTankNozzlesprite().getX(), this.getTankNozzlesprite().getY());
+           // float angle=Math.toDegrees(Math.cos(this.getTankBodysprite().));
+            //else  tankCapsprite.setPosition(this.getTankNozzlesprite().getX()-20, this.getTankNozzlesprite().getY());
+        }
+
+        //if (this.player.getNumber()==2) this.tankCapsprite.flip(true,false);
 
 
 
@@ -155,20 +199,25 @@ public class Tank
         int idx;
         //handle tank movement
         Float x,y;
+        this.xi=this.x;this.yi=this.y;
         x=this.getx();
         y=this.gety();
+        if (this.getFuel().getPercent()<=0) return;
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
         {      //left
             idx=GameScreen.calcIndex(x);
             this.setx(this.getx() - this.getSpeed()*delta);
             this.sety(GameScreen.getEquation().get(idx).get(0) * this.getx() + GameScreen.getEquation().get(idx).get(1));
+            this.getFuel().reduceFuel((double) ((Math.abs(this.x-this.xi))/2));
+            //this.setFuel(this.getFuel().getPercent()-(Math.abs(this.x-this.xi))/2);
         }
-
+        if (this.getFuel().getPercent()<=0) return;
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) //right
         {
             idx=GameScreen.calcIndex(x);
             this.setx(this.getx() + this.getSpeed()* Gdx.graphics.getDeltaTime());
             this.sety(GameScreen.getEquation().get(idx).get(0) * this.getx() + GameScreen.getEquation().get(idx).get(1));
+            this.getFuel().reduceFuel((double) ((Math.abs(this.x-this.xi))/2));
 
         }
 
@@ -377,5 +426,29 @@ public class Tank
 
     public void setX2(Float x2) {
         this.x2 = x2;
+    }
+
+    public Float getXi() {
+        return xi;
+    }
+
+    public void setXi(Float xi) {
+        this.xi = xi;
+    }
+
+    public Float getYi() {
+        return yi;
+    }
+
+    public void setYi(Float yi) {
+        this.yi = yi;
+    }
+
+    public Float getY2() {
+        return y2;
+    }
+
+    public void setY2(Float y2) {
+        this.y2 = y2;
     }
 }

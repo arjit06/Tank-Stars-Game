@@ -8,9 +8,9 @@ public class Weapon {
     private Double maxDamagePercent= Double.valueOf(0);
 
     private Float x;
-    private Float x0;
+    private Float x0,xp;
     private Float y;
-    private Float y0;
+    private Float y0,yp;
     private Float width;
     private Float height;
     private Float bodyHeight;
@@ -36,6 +36,8 @@ public class Weapon {
         this.maxDamagePercent = maxDamagePercent;
         this.x = x;
         this.x0=x;
+        this.xp=x0;
+        this.yp=y0;
         this.y = y;
         this.y0=y;
         this.speed=speed;
@@ -75,7 +77,7 @@ public class Weapon {
 
     //public
 
-    public void projectileMotion(Float delta)
+    public void projectileMotion(Float delta,Tank tank)
     {
 
 
@@ -85,6 +87,8 @@ public class Weapon {
         cnt++;
 
         if (this.isBulletDead==1) return;
+        this.xp=this.x;
+        this.yp=this.y;
 
         //this.x+=ux*delta;
         this.x=x0+ ux*t;
@@ -93,7 +97,8 @@ public class Weapon {
 
         this.y=y0+ uy*t-(4.9f*t*t);
 
-        //this.angle_with_ground=Math.toDegrees(Math.atan(y))
+        this.angle_with_ground= (float) Math.toDegrees(Math.atan((y-yp)/(x-xp)));
+        //System.out.println(angle_with_ground);
 
         vy= (float) (uy-4.9*t);
         this.angle= (float) Math.toDegrees( Math.atan(vy/vx));
@@ -101,6 +106,14 @@ public class Weapon {
 
         if (cnt==1) diff=this.y0-this.y;
         this.y+=diff;
+
+        if (x>=tank.getx() && x<=tank.getX2() && y>=tank.gety() && y<=tank.getY2())
+        {
+            this.blast(0f);
+
+        } //tank hit
+
+
         //System.out.println(x0+" "+x+" "+y);
         if (x<0 || x>800)  this.isBulletDead=1;
 
@@ -316,5 +329,13 @@ public class Weapon {
     public String toString()
     {
         return this.name;
+    }
+
+    public float getAngle_with_ground() {
+        return angle_with_ground;
+    }
+
+    public void setAngle_with_ground(float angle_with_ground) {
+        this.angle_with_ground = angle_with_ground;
     }
 }

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class FrostTank extends Tank{
     private ArrayList<Weapon> weapons;
     private ArrayList<Weapon> currWeapons;
-    public FrostTank(Float x, Float y, Float width, Float height) {
-        super(x, y, width, height,"frost");
+    public FrostTank(Float x, Float y, Float width, Float height,int number) {
+        super(x, y, width, height,"frost",number);
     }
     public void fireWeapon()
     {

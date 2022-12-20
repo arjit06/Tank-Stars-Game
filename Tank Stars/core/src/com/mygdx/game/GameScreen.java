@@ -50,7 +50,9 @@ public class GameScreen implements Screen
     {
         createSpritesAndTextures();
         this.player1=SetPlayer.getPlayer1();
+        this.player1.getTank().setPlayer(this.player1);
         this.player2=SetPlayer.getPlayer2();
+        this.player2.getTank().setPlayer(this.player2);
 
         initializePlayerTanks();
 
@@ -67,17 +69,21 @@ public class GameScreen implements Screen
     {
         Tank t=player2.getTank();
         t.getTankNozzlesprite().setOrigin(0,0);
-        t.getTankNozzlesprite().setPosition(t.getx(),t.gety()+t.getBodyHeight());
+        t.getTankNozzlesprite().setPosition(t.getx()+t.getWidth(),t.gety()+t.getBodyHeight());
         t.getTankNozzlesprite().setSize(t.getWidth(), t.getNozzleHeight());
+        t.getTankNozzlesprite().setRotation(150);
+        //t.getTankNozzlesprite().flip(true, false);
 
 
         t.getTankBodysprite().setOrigin(0,0);
         t.getTankBodysprite().setPosition(t.getx(),t.gety());
         t.getTankBodysprite().setSize(t.getWidth(), t.getBodyHeight());
+        //t.getTankBodysprite().flip(true, false);
 
         t.getTankCapsprite().setOrigin(0,0);
-        t.getTankCapsprite().setPosition(t.getTankNozzlesprite().getX(), t.getTankNozzlesprite().getY());
+        //t.getTankCapsprite().setPosition(t.getTankNozzlesprite().getX()-20, t.getTankNozzlesprite().getY());
         t.getTankCapsprite().setSize(10, 20);
+       // t.getTankCapsprite().flip(true,false);
 
 
 
@@ -96,6 +102,10 @@ public class GameScreen implements Screen
         if (t.getName().equals("abrams")) t.getTankCapsprite().setPosition(t.getTankNozzlesprite().getX()+10, t.getTankNozzlesprite().getY());
         else  t.getTankCapsprite().setPosition(t.getTankNozzlesprite().getX(), t.getTankNozzlesprite().getY());
         t.getTankCapsprite().setSize(10, 20);
+
+
+        player1.getTank().setXi(player1.getTank().getx());
+        player2.getTank().setXi(player2.getTank().getx());
 
 
     }
@@ -221,10 +231,14 @@ public class GameScreen implements Screen
         if (t==1)
         {
             TURN=2;
+            player2.getTank().getFuel().resetFuel();
+            player2.getTank().setXi(player2.getTank().getx());
         }
         else
         {
             TURN=1;
+            player1.getTank().getFuel().resetFuel();
+            player1.getTank().setXi(player1.getTank().getx());
         }
     }
 
@@ -292,8 +306,9 @@ public class GameScreen implements Screen
             {
 //                player1.getTank().fireNuke(this.weapon,game,delta,nukeImage);
                 if (player1.getCurrWeapon().isBulletDead==0) {
-                    player1.getCurrWeapon().projectileMotion(delta);
+                    player1.getCurrWeapon().projectileMotion(delta,player2.getTank());
                     t.getNukeSprite().setPosition(weapon.getX(),weapon.getY());
+                    t.getNukeSprite().setRotation(weapon.getAngle_with_ground());
                    // System.out.println(weapon.getAngle());
                     //t.getNukeSprite().setRotation(weapon.getAngle());
                     if (weapon.isBulletDead==0) nukeFlag=1;
@@ -354,7 +369,7 @@ public class GameScreen implements Screen
                 t.getNukeSprite().setPosition(weapon_x,weapon_y);
                 t.getNukeSprite().setSize(80f,80f);
 
-                weapon=new Weapon("missile",50.0,weapon_x,weapon_y,80f,80f,player2.getTank().getTankNozzlesprite().getRotation(),weapon_speed_p2);
+                weapon=new Weapon("missile",30.0,weapon_x,weapon_y,80f,80f,player2.getTank().getTankNozzlesprite().getRotation(),weapon_speed_p2);
                 //t.getNukeSprite().setRotation(weapon.getAngle());
                 player2.setCurrWeapon(weapon);
                 //player2.getCurrWeapon().setSpeed(weapon_speed_p2);
@@ -368,10 +383,10 @@ public class GameScreen implements Screen
                 //System.out.println(1);
 //                player2.getTank().fireNuke(this.weapon,game,delta,nukeImage);
                 if (weapon.isBulletDead==0) {
-                    weapon.projectileMotion(delta);
+                    weapon.projectileMotion(delta,player1.getTank());
                    // System.out.println((getWeapon().isBulletDead));
                     t.getNukeSprite().setPosition(weapon.getX(),weapon.getY());
-                    //t.getNukeSprite().setRotation(weapon.getAngle());
+                    t.getNukeSprite().setRotation(weapon.getAngle_with_ground());
                     if (weapon.isBulletDead==0) nukeFlag=1;
                     else nukeFlag=0;
                     //game.getBatch().draw(nukeImage, weapon.getX(), weapon.getY(), weapon.getWidth(), weapon.getHeight());
@@ -445,11 +460,13 @@ public class GameScreen implements Screen
         {
             game.getBatch().draw(power_red, 74, 24, power_red_Width_p1, 52);
             font.draw(game.getBatch(), String.valueOf(player1.getTank().getPower()), 125, 55);
+            font.draw(game.getBatch(), "FUEL: "+String.valueOf((int)player1.getTank().getFuel().getPercent()+" %"), 155, 380);
         }//power
         else
         {
             game.getBatch().draw(power_red,74,24,power_red_Width_p2,52); //power
             font.draw(game.getBatch(), String.valueOf(player2.getTank().getPower()), 125, 55);
+            font.draw(game.getBatch(), "FUEL: "+String.valueOf((int)player2.getTank().getFuel().getPercent()+" %"), 603, 380);
         }
 
 

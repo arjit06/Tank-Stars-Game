@@ -75,8 +75,17 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
             //first tank selected
             if (!currpagePath.equals(nextPagePath))
             {
-                if (currPlayer==1) SetPlayer.getPlayer1().setTank(new FrostTank(50f,111f,80f,60f));
-                else SetPlayer.getPlayer2().setTank(new FrostTank(565f,103f,80f,60f));
+                if (currPlayer==1){
+                    Player player=SetPlayer.getPlayer1();
+                    player.setTank(new FrostTank(50f,111f,80f,60f,1));
+                    player.getTank().setPlayer(player);
+                }
+                else
+                {
+                    Player player=SetPlayer.getPlayer2();
+                    player.setTank(new FrostTank(565f,103f,80f,60f,2));
+                    player.getTank().setPlayer(player);
+                }
 
                 game.setScreen(new ChooseTankScreen(game,nextPagePath,this.currPlayer,this.currpagePath,this.mainScreen));
             }
@@ -92,8 +101,17 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
             //second tank selected
             if (!currpagePath.equals(nextPagePath))
             {
-                if (currPlayer==1) SetPlayer.getPlayer1().setTank(new BuratinoTank(50f,111f,80f,60f));
-                else SetPlayer.getPlayer2().setTank(new BuratinoTank(565f,103f,80f,60f));
+                if (currPlayer==1){
+                    Player player=SetPlayer.getPlayer1();
+                    player.setTank(new BuratinoTank(50f,111f,80f,60f,1));
+                    player.getTank().setPlayer(player);
+                }
+                else
+                {
+                    Player player=SetPlayer.getPlayer2();
+                    player.setTank(new BuratinoTank(565f,103f,80f,60f,2));
+                    player.getTank().setPlayer(player);
+                }
 
                 game.setScreen(new ChooseTankScreen(game,nextPagePath,this.currPlayer,this.currpagePath,this.mainScreen));
             }
@@ -106,8 +124,17 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
             //third tank selected
             if (!currpagePath.equals(nextPagePath))
             {
-                if (currPlayer==1) SetPlayer.getPlayer1().setTank(new AbramsTank(50f,111f,80f,60f));
-                else SetPlayer.getPlayer2().setTank(new AbramsTank(565f,103f,80f,60f));
+                if (currPlayer==1){
+                    Player player=SetPlayer.getPlayer1();
+                    player.setTank(new AbramsTank(50f,111f,80f,60f,1));
+                    player.getTank().setPlayer(player);
+                }
+                else
+                {
+                    Player player=SetPlayer.getPlayer2();
+                    player.setTank(new AbramsTank(565f,103f,80f,60f,2));
+                    player.getTank().setPlayer(player);
+                }
 
                 game.setScreen(new ChooseTankScreen(game,nextPagePath,this.currPlayer,this.currpagePath,this.mainScreen));
             }

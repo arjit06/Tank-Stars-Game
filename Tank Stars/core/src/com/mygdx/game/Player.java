@@ -2,14 +2,15 @@ package com.mygdx.game;
 
 public class Player
 {
-   // private int number;
+   private int number;
     private Tank tank;
     private Weapon currWeapon;
     private Health health;
-    public Player(Tank t)
+    public Player(Tank t,int no)
     {
         this.tank=t;
         this.health=new Health();
+        this.number=no;
         //this.tank.setPlayer(this);
        // this.number=number;
     }
@@ -174,6 +175,14 @@ public class Player
 
     public void setHealth(Health health) {
         this.health = health;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     //    public void moveTank(Double dist)
