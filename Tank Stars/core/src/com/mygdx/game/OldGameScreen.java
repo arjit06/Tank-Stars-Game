@@ -49,10 +49,10 @@ public class OldGameScreen implements ApplicationListener, Screen
 //            System.out.println("X= "+Gdx.input.getX()+"Y= "+Gdx.input.getY());
 //        }
 
-        if (Gdx.input.isTouched() && Gdx.input.getX()>=13 && Gdx.input.getX()<=52 && Gdx.input.getY()>=11 && Gdx.input.getY()<=66)
-        {
-               game.setScreen(new PauseMenu(game,this));               //pause menu pressed
-        }
+//        if (Gdx.input.isTouched() && Gdx.input.getX()>=13 && Gdx.input.getX()<=52 && Gdx.input.getY()>=11 && Gdx.input.getY()<=66)
+//        {
+//               game.setScreen(new PauseMenu(game,this));               //pause menu pressed
+//        }
 
     }
 

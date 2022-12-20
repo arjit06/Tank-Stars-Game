@@ -11,14 +11,15 @@ public class PauseMenu implements ApplicationListener, Screen
 {
     private final MyGdxGame game;
     private OrthographicCamera camera;
-    private Texture pausepage;
-    private OldGameScreen gameScreen;
-    public PauseMenu(MyGdxGame game, OldGameScreen gameScreen)
+    private Texture pausepage,backButton;
+    private GameScreen gameScreen;
+    public PauseMenu(MyGdxGame game, GameScreen gameScreen)
     {
         this.game=game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         pausepage=new Texture("pauseMenu.png");
+        backButton=new Texture("back_button.png");
         this.gameScreen=gameScreen;
 
 
@@ -47,10 +48,7 @@ public class PauseMenu implements ApplicationListener, Screen
         game.getBatch().draw(pausepage, 0, 0,800,480);
         game.getBatch().end();
 
-//        if (Gdx.input.justTouched())  //used to get x-y coordinates of any point touched
-//        {
-//            System.out.println("X= "+Gdx.input.getX()+"Y= "+Gdx.input.getY());
-//        }
+//
 
         if (Gdx.input.isTouched() && (Gdx.input.getX()>=341 && Gdx.input.getX()<=504 && Gdx.input.getY()>=81 && Gdx.input.getY()<=145))
         {
@@ -61,7 +59,7 @@ public class PauseMenu implements ApplicationListener, Screen
         else if (Gdx.input.isTouched() && (Gdx.input.getX()>=344 && Gdx.input.getX()<=501 && Gdx.input.getY()>=182 && Gdx.input.getY()<=245))
         {
             //save state
-           game.setScreen(new SaveScreen(game));
+           game.setScreen(new SaveScreen(game,this));
         }
         else if (Gdx.input.isTouched() && (Gdx.input.getX()>=342 && Gdx.input.getX()<=508 && Gdx.input.getY()>=280 && Gdx.input.getY()<=342))
         {
@@ -122,11 +120,11 @@ public class PauseMenu implements ApplicationListener, Screen
         this.pausepage = pausepage;
     }
 
-    public OldGameScreen getGameScreen() {
+    public GameScreen getGameScreen() {
         return gameScreen;
     }
 
-    public void setGameScreen(OldGameScreen gameScreen) {
+    public void setGameScreen(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
     }
 }

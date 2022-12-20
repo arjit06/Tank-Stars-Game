@@ -25,7 +25,14 @@ public class HomeScreen implements ApplicationListener, Screen
     private OrthographicCamera camera; // like a real camera
     private Texture homepage;
 
-    public HomeScreen(MyGdxGame game)
+
+    private static HomeScreen homeScreen=null; //singleton
+    public static HomeScreen getInstance(MyGdxGame game)
+    {
+        if (homeScreen==null) homeScreen=new HomeScreen(game);
+        return homeScreen;
+    }
+    private  HomeScreen(MyGdxGame game)
     {
         this.game = game;
         this.homepage=new Texture("homepage.png");
@@ -57,6 +64,7 @@ public class HomeScreen implements ApplicationListener, Screen
         // time to 0
         elapsedTime = 0f;
     }
+
 
     @Override
     public void create() {

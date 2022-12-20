@@ -120,7 +120,7 @@ public class ChooseTankScreen implements Screen//, ApplicationListener
             else
             {
                 //if (Gdx.input.getX()>=630 && Gdx.input.getX()<=739) game.setScreen(new OldGameScreen(game,this.mainScreen));
-                if (Gdx.input.getX()>=630 && Gdx.input.getX()<=739) game.setScreen(new GameScreen(game));
+                if (Gdx.input.getX()>=630 && Gdx.input.getX()<=739) game.setScreen(new GameScreen(game,mainScreen));
             }
 
         }

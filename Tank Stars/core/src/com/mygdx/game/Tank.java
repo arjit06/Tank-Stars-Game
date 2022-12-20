@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Tank
@@ -23,9 +24,12 @@ public class Tank
     private Texture tankBodyImage;
     private Texture tankNozzleImage;
     private Texture tankCapImage;
+    private Texture nukeImage;
 
     private Sprite tankNozzlesprite;
     private Sprite tankBodysprite;
+    private Sprite tankCapsprite;
+    private Sprite nukeSprite;
 
     private int flag=0,angle_flag=0;
 
@@ -33,6 +37,7 @@ public class Tank
     public Tank(Float x,Float y,Float width,Float height,String name)
     {
         this.x=x;
+
         this.y=y;
         this.width=width;
         this.height=height;
@@ -45,22 +50,28 @@ public class Tank
         String player_Tank=this.getName();
         String name_body=player_Tank+"_body.png";
         String name_nozzle=player_Tank+"_nozzle.png";
+        String name_cap=player_Tank+"_cap.png";
 
         tankBodyImage=new Texture(name_body);
         tankNozzleImage=new Texture(name_nozzle);
+        tankCapImage=new Texture(name_cap);
+        nukeImage=new Texture("nuke.png");
 
         tankNozzlesprite = new Sprite(tankNozzleImage);
         tankBodysprite = new Sprite(tankBodyImage);
+        tankCapsprite=new Sprite(tankCapImage);
+        nukeSprite=new Sprite(nukeImage);
     }
 
     public void setAngle()//Tank tank,Sprite tankNozzlesprite,Sprite tankBodysprite)
     {
+
         if (Gdx.input.justTouched())
         {
             flag++;
-//            tankBodysprite.flip(true,false);
-//            tankNozzlesprite.flip(true,false);
         }
+        //System.out.println(flag);
+
 
         if (flag==1 ) //touch aim to set angle, set angle  then touch again  to fix
         {
@@ -79,6 +90,8 @@ public class Tank
                 //tankNozzlesprite.setRotation(90-((int)angle-90));
             }
         }
+        else GameScreen.angle_flag=0;
+
     }
 
     public void update()
@@ -98,6 +111,11 @@ public class Tank
         tankBodysprite.setOrigin(0,0);
         tankBodysprite.setPosition(this.getx(),this.gety());
         tankBodysprite.setSize(this.getWidth(), this.getBodyHeight());
+
+        if (this.name.equals("abrams")) tankCapsprite.setPosition(this.getTankNozzlesprite().getX()+10, this.getTankNozzlesprite().getY());
+        else  tankCapsprite.setPosition(this.getTankNozzlesprite().getX(), this.getTankNozzlesprite().getY());
+
+
 
        // tankCapsprite
 
@@ -125,6 +143,7 @@ public class Tank
         tank_angle=(Math.toDegrees(Math.atan(slope)));
         tankBodysprite.setRotation((int)tank_angle);
         tankNozzlesprite.setRotation(angle_diff+tankBodysprite.getRotation());
+        tankCapsprite.setRotation(tankBodysprite.getRotation());
 
     }
 
@@ -314,4 +333,30 @@ public class Tank
     public void setFlag(int flag) {
         this.flag = flag;
     }
+
+    public Texture getNukeImage() {
+        return nukeImage;
+    }
+
+    public void setNukeImage(Texture nukeImage) {
+        this.nukeImage = nukeImage;
+    }
+
+    public Sprite getNukeSprite() {
+        return nukeSprite;
+    }
+
+    public void setNukeSprite(Sprite nukeSprite) {
+        this.nukeSprite = nukeSprite;
+    }
+
+    public Sprite getTankCapsprite() {
+        return tankCapsprite;
+    }
+
+    public void setTankCapsprite(Sprite tankCapsprite) {
+        this.tankCapsprite = tankCapsprite;
+    }
+
+
 }

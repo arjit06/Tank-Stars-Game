@@ -13,6 +13,7 @@ public class DesktopLauncher {
 		config.setWindowedMode(800, 480); //game window size
 		config.useVsync(true);
 		config.setForegroundFPS(60); //fps used by the game when in focus
-		new Lwjgl3Application(new MyGdxGame(), config);
+		MyGdxGame game =MyGdxGame.getInstance();
+		new Lwjgl3Application(game, config);
 	}
 }

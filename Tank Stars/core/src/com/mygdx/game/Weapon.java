@@ -77,12 +77,18 @@ public class Weapon {
 
         //this.x+=ux*delta;
         this.x=x0+ ux*t;
+        vx=ux;
         //this.y=A*x-(B*x*x);
 
         this.y=y0+ uy*t-(4.9f*t*t);
+
+        vy= (float) (uy-4.9*t);
+        this.angle= (float) Math.toDegrees( Math.atan(vy/vx));
+
+
         if (cnt==1) diff=this.y0-this.y;
         this.y+=diff;
-
+        //System.out.println(x0+" "+x+" "+y);
         if (x<0 || x>800) this.blast((float) 0);
 
         if (x>=0 && x<=107)
@@ -283,6 +289,14 @@ public class Weapon {
 
     public Float getHeight() {
         return height;
+    }
+
+    public float getAngle() {
+        return angle;
+    }
+
+    public void setAngle(float angle) {
+        this.angle = angle;
     }
 
     @Override

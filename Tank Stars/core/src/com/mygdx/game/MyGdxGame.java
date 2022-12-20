@@ -10,12 +10,21 @@ public class MyGdxGame extends Game {
 	private BitmapFont font;
 	private Texture img; /* encapsulation*/
 
+	private static MyGdxGame game=null;
+	public static MyGdxGame getInstance()
+	{
+		if (game==null) game =new MyGdxGame();
+		return game;
+	}
+	private MyGdxGame(){}
+
 
 	public void create () {
 		batch = new SpriteBatch(); //used to render objects on the screen
 		font =new BitmapFont(); // used to render text on the screen
-		this.setScreen(new HomeScreen(this) /* composition relation */ );
-		//this.setScreen(new GameScreen(this));
+		HomeScreen homeScreen=HomeScreen.getInstance(this); //singleton design pattern
+		this.setScreen(homeScreen /* composition relation */ );
+		//this.setScreen(new GameScreen(this,new MainScreen(this)));
 
 	}
 
