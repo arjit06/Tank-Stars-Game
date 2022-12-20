@@ -2,13 +2,16 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
+import jdk.tools.jmod.Main;
 
 public class MainScreen implements Screen
 {
     private final MyGdxGame game;
+    static Music mainSound;
     private OrthographicCamera camera;
     private Texture mainpage;
 
@@ -18,6 +21,8 @@ public class MainScreen implements Screen
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         mainpage=new Texture("mainpage.png");
+        mainSound=Gdx.audio.newMusic(Gdx.files.internal("mainmusic.mp3"));
+        mainSound.setLooping(true);
     }
 
     @Override
@@ -36,17 +41,21 @@ public class MainScreen implements Screen
 
         if (Gdx.input.isTouched() && Gdx.input.getX()>=562 && Gdx.input.getX()<=740 && Gdx.input.getY()>=332 && Gdx.input.getY()<=394)
         {
+
             //this.dispose();
             game.dispose();                   //exit button pressed
         }
 
        else if (Gdx.input.isTouched() && Gdx.input.getX()>=562 && Gdx.input.getX()<=736 && Gdx.input.getY()>=240 && Gdx.input.getY()<=314)
         {
+
+            //mainSound.stop();
             game.setScreen(new LoadScreen(game,this));                 //resume game button pressed
         }
 
         else if (Gdx.input.isTouched() && Gdx.input.getX()>=568 && Gdx.input.getX()<=740 && Gdx.input.getY()>=142 && Gdx.input.getY()<=210)
         {
+           // mainSound.stop();
             game.setScreen(new ChooseTankScreen(game,"tank_screen_p1_1.png",1,"mainpage.png",this));          //vs game button pressed
         }
 
@@ -62,7 +71,7 @@ public class MainScreen implements Screen
         // start the playback of the background music
         // when the screen is shown
 
-        //rainMusic.play();
+        mainSound.play();
     }
 
     @Override

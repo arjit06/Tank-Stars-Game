@@ -3,6 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,6 +31,8 @@ public class GameScreen implements Screen
     private Texture bg;
     private Texture nukeImage;
     private Float next;
+    Music gamebgmusic;
+    Sound shoot;
     //private World world;
     ///private Box2DDebugRenderer debugRenderer;
     private static ArrayList<ArrayList<Float>> equation=new ArrayList<ArrayList<Float>> ();
@@ -45,6 +49,8 @@ public class GameScreen implements Screen
     float power_red_Width_p1=75,power_red_Width_p2=75,weapon_speed_p1=85f,weapon_speed_p2=85f;
     float health_width_p1=200,health_width_p2=200;
 
+    //added for saving game..
+    //private static DataClass dataClass;
 
     public GameScreen(MyGdxGame game,MainScreen mainScreen)
     {
@@ -63,6 +69,9 @@ public class GameScreen implements Screen
 
         //create the arraylist containg slopes and constants in (m,c) form for y=mx+c
         createEquationArrayList();
+
+        //added for saving game..
+       // this.dataClass=setDataClass();
     }
 
     public void initializePlayerTanks()
@@ -126,6 +135,9 @@ public class GameScreen implements Screen
         pauseButton=new Texture("pause_button.png");
         font = new BitmapFont();
         font.setColor(Color.WHITE);
+        gamebgmusic=Gdx.audio.newMusic(Gdx.files.internal("gameScreenBgSound.mp3"));
+        gamebgmusic.setLooping(true);
+        shoot=Gdx.audio.newSound(Gdx.files.internal("shoot.mp3"));
 
         //font.getData().setScale(1.3F, 1.3F);
 
@@ -296,6 +308,7 @@ public class GameScreen implements Screen
                 //System.out.println(weapon_speed_p1);
                 weapon=new Weapon("missile",30.0,weapon_x,weapon_y,80f,80f,player1.getTank().getTankNozzlesprite().getRotation(),weapon_speed_p1);
                 player1.setCurrWeapon(weapon);
+                shoot.play();
                 //player1.getCurrWeapon().setSpeed(weapon_speed_p1);
                 //t.getNukeSprite().setRotation(weapon.getAngle());
 
@@ -370,6 +383,7 @@ public class GameScreen implements Screen
                 t.getNukeSprite().setSize(80f,80f);
 
                 weapon=new Weapon("missile",30.0,weapon_x,weapon_y,80f,80f,player2.getTank().getTankNozzlesprite().getRotation(),weapon_speed_p2);
+                shoot.play();
                 //t.getNukeSprite().setRotation(weapon.getAngle());
                 player2.setCurrWeapon(weapon);
                 //player2.getCurrWeapon().setSpeed(weapon_speed_p2);
@@ -401,6 +415,7 @@ public class GameScreen implements Screen
 
     @Override
     public void show() {
+        gamebgmusic.play();
 
     }
 
@@ -665,4 +680,19 @@ public class GameScreen implements Screen
     public void setMainScreen(MainScreen mainScreen) {
         this.mainScreen = mainScreen;
     }
+
+
+    //added for saving game..
+
+//    public DataClass setDataClass()
+//    {
+//        DataClass d=new DataClass();
+//        d.setData();
+//        //System.out.println();
+//        return d;
+//    }
+//
+//    public static DataClass getDataClass() {
+//        return dataClass;
+//    }
 }

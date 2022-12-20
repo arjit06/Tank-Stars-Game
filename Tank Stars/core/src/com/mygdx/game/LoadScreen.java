@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+
 public class LoadScreen implements Screen
 {
     private final MyGdxGame game;
@@ -44,12 +47,38 @@ public class LoadScreen implements Screen
 //            System.out.println("X= "+Gdx.input.getX()+"Y= "+Gdx.input.getY());
 //        }
 
+
+        //for checking whether loading is working correctly or not..
+//        if(Gdx.input.isTouched() )
+//        {
+//            GameScreen g1 = null;
+//            ObjectInputStream in=null;
+//            try{
+//                in=new ObjectInputStream(new FileInputStream(1+".txt"));
+//                g1=(GameScreen) (in.readObject());
+//                in.close();
+//            } catch (Exception e){
+//                System.out.println("Could not get game");
+//                //return null;
+//            } finally {
+//                //games.remove(p);
+//                //saved_games.remove(index);
+//                //g1.get
+//                //System.out.println(g1.getPlayer1().getTank().getx());
+//                //System.out.println(g1.TURN);
+//                //game.setScreen(g1);
+//            }
+//        }
+
+
         if (Gdx.input.isTouched() && (Gdx.input.getX()>=42 && Gdx.input.getX()<=190 && Gdx.input.getY()>=24 && Gdx.input.getY()<=87))
         {
             //resume game
             game.setScreen(mainScreen);
 
         }
+
+
 
     }
 
