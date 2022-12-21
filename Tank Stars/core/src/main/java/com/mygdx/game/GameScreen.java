@@ -14,43 +14,98 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameScreen implements Screen
+public class GameScreen implements Screen, Serializable
 {
-    private final MyGdxGame game;
-    private BitmapFont font;
+    private MyGdxGame game;
+    private transient BitmapFont font;
     private static int TURN=1;
-    private OrthographicCamera camera;
+    private transient OrthographicCamera camera;
 
-    private Texture ground;
-    private Texture  health_bar_bg;
-    private Texture  health_bar;
-    private Texture  vs;
-    private Texture medal,fire,aim,power_red,power_black,chance,pauseButton;
-    private Texture bg;
-    private Texture nukeImage;
+    private transient Texture ground;
+    private transient Texture  health_bar_bg;
+    private transient Texture  health_bar;
+    private transient Texture  vs;
+    private transient Texture medal,fire,aim,power_red,power_black,chance,pauseButton;
+    private transient Texture bg;
+    private transient Texture nukeImage;
     private Float next;
-    Music gamebgmusic;
-    Sound shoot;
+    transient Music  gamebgmusic;
+    transient Sound shoot;
     //private World world;
     ///private Box2DDebugRenderer debugRenderer;
     private static ArrayList<ArrayList<Float>> equation=new ArrayList<ArrayList<Float>> ();
-    private static Player player1;
-    private static Player player2;
-    private Weapon weapon;
+    private Player player1;
+    private Player player2;
+    private  Weapon weapon;
     private int flag=0;
     private int cnt=0;
     private int nukeFlag=0;
     public static int angle_flag=0;
     private static int start=0;
     float weapon_x,weapon_y;
-    private MainScreen mainScreen;
+    private transient MainScreen mainScreen;
     float power_red_Width_p1=75,power_red_Width_p2=75,weapon_speed_p1=85f,weapon_speed_p2=85f;
     float health_width_p1=200,health_width_p2=200;
 
     //added for saving game..
-    //private static DataClass dataClass;
+    private static DataClass dataClass;
+    public void necessity()
+    {
+        this.camera = new OrthographicCamera();
+        this.camera.setToOrtho(false, 800, 480);
+        this.ground=new Texture("ground.png");
+        this.bg=new Texture("game_screen_bg.png");
+        this.health_bar_bg=new Texture("health_bar_border.png");
+        this.health_bar=new Texture("blue_health_bar.png");
+        this.nukeImage=new Texture("nuke.png");
+        this.player1.getTank().necessityTank();
+        this.player2.getTank().necessityTank();
+
+        //Sound explosion=Gdx.audio.newSound(Gdx.files.internal("explosion.mp3"));
+        this.weapon.necessityWeapon();
+        this.game=MyGdxGame.getInstance();
+        this.vs=new Texture("vs.png");
+        this.medal=new Texture("medal.png");
+        this.fire=new Texture("fire.png");
+        this.aim=new Texture("aim.png");
+        this.power_red=new Texture("power_red.png");
+        this.power_black=new Texture("power_black.png");
+        this.chance=new Texture("chance.png");
+        this.pauseButton=new Texture("pause_button.png");
+        this.font = new BitmapFont();
+        this.font.setColor(Color.WHITE);
+        this.gamebgmusic=Gdx.audio.newMusic(Gdx.files.internal("gameScreenBgSound.mp3"));
+        this.gamebgmusic.setLooping(true);
+        this.shoot=Gdx.audio.newSound(Gdx.files.internal("shoot.mp3"));
+        this.mainScreen=new MainScreen(this.game);
+        //this.chance=
+        createEquationArrayList();
+        setEquation(this.equation);
+        this.dataClass=setDataClass();
+
+
+        //ground=new Texture("ground.png");
+        //bg=new Texture("game_screen_bg.png");
+        //health_bar_bg=new Texture("health_bar_border.png");
+        //health_bar=new Texture("blue_health_bar.png");
+        //vs=new Texture("vs.png");
+        medal=new Texture("medal.png");
+        fire=new Texture("fire.png");
+        aim=new Texture("aim.png");
+        power_red=new Texture("power_red.png");
+        power_black=new Texture("power_black.png");
+        chance=new Texture("chance.png");
+        pauseButton=new Texture("pause_button.png");
+        font = new BitmapFont();
+        font.setColor(Color.WHITE);
+        gamebgmusic=Gdx.audio.newMusic(Gdx.files.internal("gameScreenBgSound.mp3"));
+        gamebgmusic.setLooping(true);
+        shoot=Gdx.audio.newSound(Gdx.files.internal("shoot.mp3"));
+        initializePlayerTanks();
+    }
 
     public GameScreen(MyGdxGame game,MainScreen mainScreen)
     {
@@ -71,7 +126,7 @@ public class GameScreen implements Screen
         createEquationArrayList();
 
         //added for saving game..
-       // this.dataClass=setDataClass();
+        this.dataClass=setDataClass();
     }
 
     public void initializePlayerTanks()
@@ -232,7 +287,7 @@ public class GameScreen implements Screen
         equation.add(i8);
     }
 
-    public static void change_Turn(int t)
+    public void change_Turn(int t)
     {
         start=0;
         player1.getTank().setFlag(0);
@@ -260,6 +315,7 @@ public class GameScreen implements Screen
         {
             if (Gdx.input.justTouched() && Gdx.input.getX()>=29 && Gdx.input.getX()<=78 && Gdx.input.getY()>=15 && Gdx.input.getY()<=57)
             {
+                gamebgmusic.stop();
                 game.setScreen(new PauseMenu(game,this));
             }
 
@@ -306,7 +362,7 @@ public class GameScreen implements Screen
                 t.getNukeSprite().setSize(80f,80f);
 
                 //System.out.println(weapon_speed_p1);
-                weapon=new Weapon("missile",30.0,weapon_x,weapon_y,80f,80f,player1.getTank().getTankNozzlesprite().getRotation(),weapon_speed_p1);
+                weapon=new Weapon("missile",30.0,weapon_x,weapon_y,80f,80f,player1.getTank().getTankNozzlesprite().getRotation(),weapon_speed_p1,this);
                 player1.setCurrWeapon(weapon);
                 shoot.play();
                 //player1.getCurrWeapon().setSpeed(weapon_speed_p1);
@@ -328,7 +384,7 @@ public class GameScreen implements Screen
                     else nukeFlag=0;
                     //game.getBatch().draw(nukeImage, weapon.getX(), weapon.getY(), weapon.getWidth(), weapon.getHeight());
                 }
-                else  GameScreen.change_Turn(GameScreen.getTURN());
+                else  this.change_Turn(GameScreen.getTURN());
             }
             health_width_p2= (float) player2.getHealth().getPercent()*2;
 
@@ -338,6 +394,7 @@ public class GameScreen implements Screen
         {
             if (Gdx.input.justTouched() && Gdx.input.getX()>=29 && Gdx.input.getX()<=78 && Gdx.input.getY()>=15 && Gdx.input.getY()<=57)
             {
+                gamebgmusic.stop();
                 game.setScreen(new PauseMenu(game,this));
             }
 
@@ -382,7 +439,7 @@ public class GameScreen implements Screen
                 t.getNukeSprite().setPosition(weapon_x,weapon_y);
                 t.getNukeSprite().setSize(80f,80f);
 
-                weapon=new Weapon("missile",30.0,weapon_x,weapon_y,80f,80f,player2.getTank().getTankNozzlesprite().getRotation(),weapon_speed_p2);
+                weapon=new Weapon("missile",30.0,weapon_x,weapon_y,80f,80f,player2.getTank().getTankNozzlesprite().getRotation(),weapon_speed_p2,this);
                 shoot.play();
                 //t.getNukeSprite().setRotation(weapon.getAngle());
                 player2.setCurrWeapon(weapon);
@@ -405,7 +462,7 @@ public class GameScreen implements Screen
                     else nukeFlag=0;
                     //game.getBatch().draw(nukeImage, weapon.getX(), weapon.getY(), weapon.getWidth(), weapon.getHeight());
                 }
-                else  GameScreen.change_Turn(GameScreen.getTURN());
+                else  this.change_Turn(GameScreen.getTURN());
             }
             health_width_p1= (float) player1.getHealth().getPercent()*2;
 
@@ -493,7 +550,7 @@ public class GameScreen implements Screen
         player1.getTank().getTankNozzlesprite().draw(game.getBatch());
         player2.getTank().getTankNozzlesprite().draw(game.getBatch());
         player1.getTank().getTankCapsprite().draw(game.getBatch());
-        player2.getTank().getTankCapsprite().draw(game.getBatch());
+        //player2.getTank().getTankCapsprite().draw(game.getBatch());
 
         game.getBatch().end();
 
@@ -621,20 +678,20 @@ public class GameScreen implements Screen
         GameScreen.equation = equation;
     }
 
-    public static Player getPlayer1() {
-        return player1;
+    public Player getPlayer1() {
+        return this.player1;
     }
 
-    public static void setPlayer1(Player player1) {
-        GameScreen.player1 = player1;
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
     }
 
-    public static Player getPlayer2() {
-        return player2;
+    public Player getPlayer2() {
+        return this.player2;
     }
 
-    public static void setPlayer2(Player player2) {
-        GameScreen.player2 = player2;
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
     }
 
     public Weapon getWeapon() {
@@ -684,15 +741,15 @@ public class GameScreen implements Screen
 
     //added for saving game..
 
-//    public DataClass setDataClass()
-//    {
-//        DataClass d=new DataClass();
-//        d.setData();
-//        //System.out.println();
-//        return d;
-//    }
-//
-//    public static DataClass getDataClass() {
-//        return dataClass;
-//    }
+    public DataClass setDataClass()
+    {
+        DataClass d=new DataClass();
+        d.setData();
+        //System.out.println();
+        return d;
+    }
+
+    public static DataClass getDataClass() {
+        return dataClass;
+    }
 }

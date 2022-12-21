@@ -6,9 +6,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Tank
+public class Tank implements Serializable
 {
     private String name;
     private Float x,x2,xi;
@@ -21,20 +22,44 @@ public class Tank
     private ArrayList<Weapon> weapons=new ArrayList<>();
     private Player player;
     private Fuel fuel;
-    private Texture tankBodyImage;
-    private Texture tankNozzleImage;
-    private Texture tankCapImage;
-    private Texture nukeImage;
+    private transient Texture tankBodyImage;
+    private transient Texture tankNozzleImage;
+    private transient Texture tankCapImage;
+    private transient Texture nukeImage;
 
-    private Sprite tankNozzlesprite;
-    private Sprite tankBodysprite;
-    private Sprite tankCapsprite;
-    private Sprite nukeSprite;
+    private transient Sprite tankNozzlesprite;
+    private transient Sprite tankBodysprite;
+    private transient Sprite tankCapsprite;
+    private transient Sprite nukeSprite;
 
     private int flag=0,angle_flag=0;
 
     private Float speed=50f,power=50f;
     int number;
+    public void necessityTank()
+    {
+//        String player_Tank=this.getName();
+//        String name_body=player_Tank+"_body.png";
+//        String name_nozzle=player_Tank+"_nozzle.png";
+        String player_Tank=this.getName();
+        String name_body=player_Tank+"_body_p"+String.valueOf(this.number)+".png";
+        String name_nozzle=player_Tank+"_nozzle_p1.png";//_nozzle_p"+String.valueOf(this.number)+".png";
+        String name_cap=player_Tank+"_cap.png";
+        this.tankBodyImage=new Texture(name_body);
+        this.tankNozzleImage=new Texture(name_nozzle);
+
+        this.tankCapImage=new Texture(name_cap);
+        this.nukeImage=new Texture("nuke.png");
+
+        this.tankNozzlesprite = new Sprite(tankNozzleImage);
+        this.tankBodysprite = new Sprite(tankBodyImage);
+
+        this.tankCapsprite=new Sprite(tankCapImage);
+        this.nukeSprite=new Sprite(nukeImage);
+
+
+
+    }
     public Tank(Float x,Float y,Float width,Float height,String name,int number)
     {
         this.x=x;

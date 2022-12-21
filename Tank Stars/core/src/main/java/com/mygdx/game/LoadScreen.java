@@ -70,6 +70,42 @@ public class LoadScreen implements Screen
 //            }
 //        }
 
+        if(Gdx.input.isTouched() )
+        {
+            GameScreen g1 = null;
+            ObjectInputStream in=null;
+            try{
+                in=new ObjectInputStream(new FileInputStream(1+".txt"));
+                g1=(GameScreen) (in.readObject());
+                in.close();
+            } catch (Exception e){
+                System.out.println("Could not get game");
+                //return null;
+            } finally {
+                //games.remove(p);
+                //saved_games.remove(index);
+                //g1.get
+                //System.out.println(g1.getPlayer1().getTank().getx());
+                /*try {
+                    sleep(1000000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }*/
+                //System.out.println(g1.TURN);
+                g1.necessity();
+                //g1.render(1);
+                System.out.println("necessity done");
+                try {
+                    game.setScreen(g1);
+                }
+                catch (NullPointerException e)
+                {
+                    System.out.println("soething is null");
+                }
+
+            }
+        }
+
 
         if (Gdx.input.isTouched() && (Gdx.input.getX()>=42 && Gdx.input.getX()<=190 && Gdx.input.getY()>=24 && Gdx.input.getY()<=87))
         {

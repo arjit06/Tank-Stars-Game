@@ -49,7 +49,7 @@ public class MainScreen implements Screen
        else if (Gdx.input.isTouched() && Gdx.input.getX()>=562 && Gdx.input.getX()<=736 && Gdx.input.getY()>=240 && Gdx.input.getY()<=314)
         {
 
-            //mainSound.stop();
+            mainSound.stop();
             game.setScreen(new LoadScreen(game,this));                 //resume game button pressed
         }
 

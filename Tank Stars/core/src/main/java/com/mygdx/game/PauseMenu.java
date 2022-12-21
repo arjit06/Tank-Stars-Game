@@ -59,7 +59,7 @@ public class PauseMenu implements ApplicationListener, Screen
         else if (Gdx.input.isTouched() && (Gdx.input.getX()>=344 && Gdx.input.getX()<=501 && Gdx.input.getY()>=182 && Gdx.input.getY()<=245))
         {
             //save state
-           game.setScreen(new SaveScreen(game,this));
+           game.setScreen(new SaveScreen(game,this,gameScreen));
         }
         else if (Gdx.input.isTouched() && (Gdx.input.getX()>=342 && Gdx.input.getX()<=508 && Gdx.input.getY()>=280 && Gdx.input.getY()<=342))
         {

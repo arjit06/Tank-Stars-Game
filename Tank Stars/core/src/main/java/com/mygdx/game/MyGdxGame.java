@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class MyGdxGame extends Game {
-	private SpriteBatch batch;
-	private BitmapFont font;
-	private Texture img; /* encapsulation*/
+import java.io.Serializable;
+
+public class MyGdxGame extends Game implements Serializable {
+	private transient SpriteBatch batch;
+	private transient BitmapFont font;
+	private transient Texture img; /* encapsulation*/
 
 	private static MyGdxGame game=null;
 	public static MyGdxGame getInstance()
@@ -42,7 +44,15 @@ public class MyGdxGame extends Game {
 
 
 	public SpriteBatch getBatch() {
-		return batch;
+		try
+		{
+			return batch;
+		}
+		catch(NullPointerException e)
+		{
+			batch = new SpriteBatch();
+			return batch;
+		}
 	}
 
 	public void setBatch(SpriteBatch batch) {
@@ -50,7 +60,16 @@ public class MyGdxGame extends Game {
 	}
 
 	public BitmapFont getFont() {
-		return font;
+
+		try
+		{
+			return font;
+		}
+		catch(NullPointerException e)
+		{
+			font =new BitmapFont();
+			return font;
+		}
 	}
 
 	public void setFont(BitmapFont font) {

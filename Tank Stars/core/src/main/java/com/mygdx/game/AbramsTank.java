@@ -1,12 +1,14 @@
 package com.mygdx.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FrostTank extends Tank{
+public class AbramsTank extends Tank implements Serializable {
+
     private ArrayList<Weapon> weapons;
     private ArrayList<Weapon> currWeapons;
-    public FrostTank(Float x, Float y, Float width, Float height,int number) {
-        super(x, y, width, height,"frost",number);
+    public AbramsTank(Float x, Float y, Float width, Float height,int number) {
+        super(x, y, width, height,"abrams",number);
     }
     public void fireWeapon()
     {

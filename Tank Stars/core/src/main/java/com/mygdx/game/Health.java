@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
-public class Health {
+import java.io.Serializable;
+
+public class Health implements Serializable {
     private double percent=100;
     public void reduceHealth(Double percent)
     {

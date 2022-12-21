@@ -2,8 +2,12 @@ package com.mygdx.game;
 
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 
-public class Weapon {
+import java.io.Serializable;
+
+public class Weapon  implements Serializable {
     private String name;
     private Double maxDamagePercent= Double.valueOf(0);
 
@@ -30,8 +34,16 @@ public class Weapon {
     Float limitY;
     int isBulletDead=0;
     int cnt=0;
+    transient Sound explosion;
 
-    public Weapon(String name, Double maxDamagePercent, Float x, Float y, Float width, Float height,float angle,float speed) {
+    private GameScreen g;
+
+    public void necessityWeapon()
+    {
+        this.explosion=Gdx.audio.newSound(Gdx.files.internal("explosion.mp3"));
+    }
+
+    public Weapon(String name, Double maxDamagePercent, Float x, Float y, Float width, Float height,float angle,float speed,GameScreen g) {
         this.name = name;
         this.maxDamagePercent = maxDamagePercent;
         this.x = x;
@@ -49,6 +61,8 @@ public class Weapon {
         this.B= (float) (ay/(2*speed*speed* Math.cos(Math.toRadians(angle)) * Math.cos(Math.toRadians(angle) )));
         ux= (float) (speed*Math.cos(Math.toRadians(angle)));
         uy= (float) (speed*Math.sin(Math.toRadians(angle)));
+        this.g=g;
+        explosion= Gdx.audio.newSound(Gdx.files.internal("explosion.mp3"));
 
     }
 
@@ -60,14 +74,15 @@ public class Weapon {
        // if (cnt>50)
         {
             this.isBulletDead=1;
+            explosion.play();
             if(GameScreen.getTURN()==1)
             {
-                Player currPlayer=GameScreen.getPlayer2();
+                Player currPlayer=this.g.getPlayer2();
                 currPlayer.healthReduction(this.x,this.y,this);
             }
             else
             {
-                Player currPlayer=GameScreen.getPlayer1();
+                Player currPlayer=this.g.getPlayer1();
                 currPlayer.healthReduction(this.x,this.y,this);
             }
         }
@@ -115,7 +130,7 @@ public class Weapon {
 
 
         //System.out.println(x0+" "+x+" "+y);
-        if (x<0 || x>800)  this.isBulletDead=1;
+        if (x<0 || x>800)   {this.isBulletDead=1;explosion.play();}
 
         if (x>=0 && x<=107)
         {
@@ -338,4 +353,12 @@ public class Weapon {
     public void setAngle_with_ground(float angle_with_ground) {
         this.angle_with_ground = angle_with_ground;
     }
+
+//    public Sound getExplosion() {
+//        return explosion;
+//    }
+//
+//    public void setExplosion(Sound explosion) {
+//        this.explosion = explosion;
+//    }
 }

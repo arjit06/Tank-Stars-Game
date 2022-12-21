@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
-public class Fuel {
+import java.io.Serializable;
+
+public class Fuel implements Serializable {
     private double percent=100; //1 unit of fuel = two x coords
     public void reduceFuel(Double percent)
     {

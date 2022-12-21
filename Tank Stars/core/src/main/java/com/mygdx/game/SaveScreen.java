@@ -13,7 +13,9 @@ public class SaveScreen implements Screen
     private Texture savepage,backButton;
     private OldGameScreen gameScreen;
     private PauseMenu pauseMenu;
-    public SaveScreen(MyGdxGame game,PauseMenu pauseMenu)
+
+    private GameScreen g;
+    public SaveScreen(MyGdxGame game,PauseMenu pauseMenu, GameScreen g)
     {
         this.game=game;
         camera = new OrthographicCamera();
@@ -22,7 +24,7 @@ public class SaveScreen implements Screen
         backButton=new Texture("back_button.png");
         this.gameScreen=gameScreen;
         this.pauseMenu=pauseMenu;
-
+        this.g=g;
     }
 
     @Override
@@ -47,6 +49,11 @@ public class SaveScreen implements Screen
             game.setScreen(pauseMenu);
 
         }
+
+        else
+            {
+                GameScreen.getDataClass().saveGame(this.g);
+            }
 
 
 
