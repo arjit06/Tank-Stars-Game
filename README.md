@@ -27,14 +27,18 @@ A game made using libgdx framework following object oriented concepts
 
 
 
-![loadS![UML- Class Diagram](https://user-images.githubusercontent.com/108218688/209279149-544398c4-9be6-4688-ba77-7f181f39b055.png)
+![loadScreen](https://user-images.githubusercontent.com/108218688/209275204-c3fae084-503a-451d-8c50-de602343dde2.png)
+
+
+
+
 
 
 
 
 UML CLASS DIAGRAM
 
-creen](https://user-images.githubusercontent.com/108218688/209275204-c3fae084-503a-451d-8c50-de602343dde2.png)
+![UML- Class Diagram](https://user-images.githubusercontent.com/108218688/209279149-544398c4-9be6-4688-ba77-7f181f39b055.png)
 
 
 
